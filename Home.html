@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediGli+ch | Next-Gen Pharmacy & Telehealth</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --electric-blue: #4a6bff;
+            --neon-cyan: #00f5d4;
+            --deep-midnight: #0a0f2e;
+            --soft-glitch: #8a9eff;
+            --cyber-white: #f0f4ff;
+            --pulse-pink: #ff3e9d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--deep-midnight) 0%, #1a1f4a 100%);
+            color: var(--cyber-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .glow-effect {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, var(--electric-blue) 0%, transparent 70%);
+            filter: blur(80px);
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .glow-1 { top: -50px; left: -50px; }
+        .glow-2 { bottom: -50px; right: -50px; background: radial-gradient(circle, var(--neon-cyan) 0%, transparent 70%); }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        /* HEADER */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(138, 158, 255, 0.2);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--electric-blue), var(--neon-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        nav a {
+            color: var(--cyber-white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        nav a:hover {
+            color: var(--neon-cyan);
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--neon-cyan);
+            transition: width 0.3s ease;
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        .cta-button {
+            background: linear-gradient(90deg, var(--electric-blue), var(--neon-cyan));
+            color: var(--deep-midnight);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(74, 107, 255, 0.4);
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(74, 107, 255, 0.6);
+        }
+
+        /* HERO SECTION */
+        .hero {
+            display: flex;
+            align-items: center;
+            padding: 5rem 0;
+            gap: 3rem;
+        }
+
+        .hero-text {
+            flex: 1;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            background: linear-gradient(90deg, var(--cyber-white), var(--neon-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            color: rgba(240, 244, 255, 0.8);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .hero-image {
+            flex: 1;
+            position: relative;
+        }
+
+        .hero-image img {
+            width: 100%;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            transform: perspective(1000px) rotateY(-10deg);
+            transition: transform 0.5s ease;
+        }
+
+        .hero-image:hover img {
+            transform: perspective(1000px) rotateY(0deg);
+        }
+
+        .search-bar {
+            display: flex;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .search-bar input {
+            flex: 1;
+            padding: 1.2rem;
+            border-radius: 50px;
+            border: none;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            color: white;
+            font-size: 1rem;
+            outline: none;
+            border: 1px solid rgba(138, 158, 255, 0.3);
+        }
+
+        .search-bar input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .search-bar button {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            background: linear-gradient(90deg, var(--electric-blue), var(--neon-cyan));
+            color: var(--deep-midnight);
+            border: none;
+            padding: 0.9rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .search-bar button:hover {
+            transform: translateX(5px);
+        }
+
+        /* FEATURES */
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 5rem 0;
+        }
+
+        .feature-card {
+            background: rgba(138, 158, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2rem;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(138, 158, 255, 0.2);
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 30px rgba(74, 107, 255, 0.2);
+            background: rgba(138, 158, 255, 0.2);
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(90deg, var(--electric-blue), var(--neon-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .feature-card p {
+            color: rgba(240, 244, 255, 0.7);
+            line-height: 1.6;
+        }
+
+        /* FOOTER */
+        footer {
+            text-align: center;
+            padding: 3rem 0;
+            margin-top: 5rem;
+            border-top: 1px solid rgba(138, 158, 255, 0.2);
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .social-links a {
+            color: var(--cyber-white);
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .social-links a:hover {
+            color: var(--neon-cyan);
+            transform: translateY(-3px);
+        }
+
+        footer p {
+            color: rgba(240, 244, 255, 0.6);
+            font-size: 0.9rem;
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .search-bar {
+                justify-content: center;
+            }
+
+            nav ul {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="glow-effect glow-1"></div>
+    <div class="glow-effect glow-2"></div>
+
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-prescription-bottle-alt"></i>
+                <span>MediGli+ch</span>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="#">Pharmacy</a></li>
+                    <li><a href="consult.html">Doctors</a></li>
+                    <li><a href="https://www.lalpathlabs.com/">Lab Tests</a></li>
+                    <li><a href="blog.html">Health Blog</a></li>
+                </ul>
+            </nav>
+            <button class="cta-button">Get Started</button>
+        </header>
+
+        <section class="hero">
+            <div class="hero-text">
+                <h1>Healthcare,<br>But Make It <span class="gradient-text">Cyber</span></h1>
+                <p>Get your meds delivered in 30 mins or consult top doctors instantly. The future of healthcare is here.</p>
+                
+                <div class="search-bar">
+                    <input type="text" placeholder="Search medicines, doctors, or labs...">
+                    <button><i class="fas fa-search"></i> Search</button>
+                </div>
+
+                <div class="popular-tags">
+                    <span>Trending:</span>
+                    <a href="#">Weight Loss</a>
+                    <a href="skincare.html">Skin Care</a>
+                    <a href="#">Mental Health</a>
+                    <a href="#">COVID Tests</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="Future Healthcare">
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="feature-card">
+                
+                <div class="feature-icon">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <a href="medi.html"><h3>Instant Delivery</h3>
+                    <p>Get your meds in under 30 mins with our hyper-fast drone delivery network.</p>
+                </div></a>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-user-md"></i>
+                </div>
+                <h3>24/7 Doctors</h3>
+                <p>Video consult with certified doctors anytime, anywhere. No waiting rooms.</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-dna"></i>
+                </div>
+                <h3>AI Health Scan</h3>
+                <p>Our AI analyzes your symptoms and suggests the best treatment options.</p>
+            </div>
+        </section>
+
+        <footer>
+            <div class="social-links">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-discord"></i></a>
+            </div>
+            <p>© 2025 MediGli+ch | The Future of Healthcare</p>
+        </footer>
+    </div>
+
+    <script>
+        // Simple animation for the search bar
+        const searchInput = document.querySelector('.search-bar input');
+        searchInput.addEventListener('focus', () => {
+            searchInput.style.border = '1px solid var(--neon-cyan)';
+        });
+        searchInput.addEventListener('blur', () => {
+            searchInput.style.border = '1px solid rgba(138, 158, 255, 0.3)';
+        });
+
+        // Glow effect follow mouse (optional)
+        document.addEventListener('mousemove', (e) => {
+            const glow = document.querySelector('.glow-1');
+            glow.style.left = `${e.clientX * 0.05}px`;
+            glow.style.top = `${e.clientY * 0.05}px`;
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><RX-DELIVERY></RX-DELIVERY> | CyberPharma Delivery</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --electric-blue: #4a6bff;
+            --neon-cyan: #00f5d4;
+            --deep-midnight: #0a0f2e;
+            --soft-glitch: #8a9eff;
+            --cyber-white: #f0f4ff;
+            --pulse-pink: #ff3e9d;
+            --matrix-green: #00ff9d;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--deep-midnight) 0%, #1a1f4a 100%);
+            color: var(--cyber-white);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+
+        .glow-effect {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, var(--electric-blue) 0%, transparent 70%);
+            filter: blur(80px);
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .glow-1 { top: 10%; left: 10%; }
+        .glow-2 { bottom: 10%; right: 10%; background: radial-gradient(circle, var(--pulse-pink) 0%, transparent 70%); }
+        .glow-3 { top: 50%; right: 50%; background: radial-gradient(circle, var(--matrix-green) 0%, transparent 70%); }
+
+        .main-container {
+            width: 100%;
+            max-width: 1200px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .content-box {
+            background: rgba(10, 15, 46, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 500px;
+            overflow: hidden;
+            border: 1px solid rgba(138, 158, 255, 0.3);
+            transition: transform 0.5s ease;
+        }
+
+        .content-box:hover {
+            transform: translateY(-5px);
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--electric-blue) 0%, var(--neon-cyan) 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .pill-icon {
+            background-color: rgba(240, 244, 255, 0.2);
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(240, 244, 255, 0.3);
+        }
+
+        .pill-icon i {
+            font-size: 36px;
+            background: linear-gradient(135deg, var(--electric-blue), var(--neon-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header h1 {
+            font-weight: 700;
+            font-size: 28px;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, var(--cyber-white), var(--neon-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-weight: 300;
+            font-size: 16px;
+        }
+
+        .content {
+            padding: 30px;
+        }
+
+        .input-group {
+            position: relative;
+            margin-bottom: 25px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 10px;
+            color: var(--neon-cyan);
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px 20px;
+            background: rgba(10, 15, 46, 0.5);
+            border: 2px solid rgba(138, 158, 255, 0.3);
+            border-radius: 10px;
+            font-size: 16px;
+            color: var(--cyber-white);
+            transition: all 0.3s ease;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 0 3px rgba(0, 245, 212, 0.3);
+        }
+
+        .input-group input::placeholder {
+            color: rgba(240, 244, 255, 0.5);
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--pulse-pink) 0%, var(--electric-blue) 100%);
+            color: var(--cyber-white);
+            border: none;
+            width: 100%;
+            padding: 16px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 62, 157, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .btn i {
+            transition: transform 0.3s ease;
+        }
+
+        .btn:hover i {
+            transform: translateX(5px);
+        }
+
+        .disclaimer {
+            margin-top: 25px;
+            font-size: 12px;
+            color: rgba(240, 244, 255, 0.6);
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        .popular-searches {
+            margin: 25px 0;
+        }
+
+        .popular-searches h3 {
+            font-size: 14px;
+            color: var(--neon-cyan);
+            margin-bottom: 12px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .popular-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tag {
+            background: rgba(138, 158, 255, 0.1);
+            color: var(--cyber-white);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(138, 158, 255, 0.3);
+        }
+
+        .tag:hover {
+            background: rgba(0, 245, 212, 0.2);
+            border-color: var(--neon-cyan);
+        }
+
+        .powered-by {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            margin-top: 20px;
+            color: rgba(240, 244, 255, 0.5);
+            font-size: 12px;
+        }
+
+        .powered-by img {
+            height: 20px;
+            filter: brightness(0) invert(1);
+        }
+
+        .error-message {
+            color: var(--pulse-pink);
+            font-size: 12px;
+            margin-top: 8px;
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 20px;
+            }
+            
+            .header {
+                padding: 30px 20px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .content {
+                padding: 25px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="glow-effect glow-1"></div>
+    <div class="glow-effect glow-2"></div>
+    <div class="glow-effect glow-3"></div>
+
+    <div class="main-container">
+        <div class="content-box">
+            <div class="header">
+                <div class="pill-icon">
+                    <i class="fas fa-prescription-bottle-alt"></i>
+                </div>
+                <h1>RX DELIVERY</h1>
+                <p> medicine delivery online</p>
+            </div>
+            
+            <div class="content">
+                <div class="input-group">
+                    <label for="medicineName"><i class="fas fa-capsules"></i> MEDICINE NAME</label>
+                    <input type="text" id="medicineName" placeholder="e.g. Neurozyme-X, BioBoost-N..." autocomplete="off">
+                    <div class="error-message" id="errorMessage">
+                        ERROR: INPUT REQUIRED
+                    </div>
+                </div>
+                
+                <div class="popular-searches">
+                    <h3><i class="fas fa-bolt"></i> FREQUENT ORDERS</h3>
+                    <div class="popular-tags">
+                        <div class="tag" onclick="setMedicine('Neurozyme-X 500mg')">Neurozyme-X</div>
+                        <div class="tag" onclick="setMedicine('BioBoost-N Capsules')">BioBoost-N</div>
+                        <div class="tag" onclick="setMedicine('CycloViral Inhibitor')">CycloViral</div>
+                    </div>
+                </div>
+                
+                <button class="btn" id="searchButton" onclick="redirectToPharmEasy()">
+                    <span>ORDER RX DELIVERY</span>
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+                
+                <p class="disclaimer">
+                    *Orders secured with blockchain technology
+                    <br>**Delivery times may vary during peak hours
+                </p>
+                
+                <div class="powered-by">
+                    <span>POWERED BY</span>
+                    <img src="https://assets.pharmeasy.in/web-assets/dist/4d2f7c48.svg" alt="PharmEasy">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // DOM Elements
+        const medicineInput = document.getElementById('medicineName');
+        const searchButton = document.getElementById('searchButton');
+        const errorMessage = document.getElementById('errorMessage');
+        
+        function setMedicine(name) {
+            medicineInput.value = name;
+            medicineInput.focus();
+            errorMessage.style.display = 'none';
+            medicineInput.style.borderColor = 'rgba(138, 158, 255, 0.3)';
+        }
+        
+        function showError(message) {
+            errorMessage.textContent = message || 'ERROR: INPUT REQUIRED';
+            errorMessage.style.display = 'block';
+            medicineInput.style.borderColor = 'var(--pulse-pink)';
+        }
+        
+        function redirectToPharmEasy() {
+            const medicineName = medicineInput.value.trim();
+            
+            if (!medicineName) {
+                showError();
+                return;
+            }
+            
+            // Show loading state
+            searchButton.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> SCANNING INVENTORY...';
+            searchButton.disabled = true;
+            
+            // Encode the medicine name for URL
+            const encodedName = encodeURIComponent(medicineName);
+            
+            // Redirect after delay
+            setTimeout(() => {
+                window.location.href = `https://pharmeasy.in/search/all?name=${encodedName}`;
+            }, 1500);
+        }
+        
+        // Allow pressing Enter key to submit
+        medicineInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                redirectToPharmEasy();
+            }
+        });
+        
+        // Validate input on blur
+        medicineInput.addEventListener('blur', function() {
+            if (!medicineInput.value.trim()) {
+                showError();
+            }
+        });
+        
+        // Hide error when user starts typing
+        medicineInput.addEventListener('input', function() {
+            if (medicineInput.value.trim()) {
+                errorMessage.style.display = 'none';
+                medicineInput.style.borderColor = 'rgba(138, 158, 255, 0.3)';
+            }
+        });
+    </script>
+</body>
+</html>
