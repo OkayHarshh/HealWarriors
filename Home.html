@@ -16,6 +16,7 @@
             --cyber-white: #f0f4ff;
             --pulse-pink: #ff3e9d;
             --cyber-purple: #8a2be2;
+            --emergency-red: #ff3a3a;
         }
 
         * {
@@ -52,6 +53,7 @@
             max-width: 1200px;
             margin: 0 auto;
             padding: 2rem;
+            position: relative;
         }
 
         /* HEADER */
@@ -155,6 +157,103 @@
         .secondary-button:hover {
             background: rgba(0, 245, 212, 0.1);
             transform: translateY(-3px);
+        }
+
+        /* EMERGENCY BUTTON */
+        .emergency-floating-btn {
+            position: fixed;
+            bottom: 2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 999;
+            background: var(--emergency-red);
+            color: white;
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 0 0 0 rgba(255, 58, 58, 0.7);
+            animation: pulse-emergency 2s infinite;
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .emergency-floating-btn:hover {
+            transform: translateX(-50%) scale(1.1);
+            box-shadow: 0 0 20px 10px rgba(255, 58, 58, 0.4);
+        }
+
+        @keyframes pulse-emergency {
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 58, 58, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(255, 58, 58, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 58, 58, 0);
+            }
+        }
+
+        /* EMERGENCY OVERLAY */
+        .emergency-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 58, 58, 0.9);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease;
+        }
+
+        .emergency-overlay.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .emergency-countdown {
+            font-size: 5rem;
+            font-weight: 700;
+            color: white;
+            margin-bottom: 2rem;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .emergency-message {
+            font-size: 2rem;
+            color: white;
+            text-align: center;
+            max-width: 800px;
+            margin-bottom: 3rem;
+            text-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+
+        .emergency-cancel-btn {
+            background: white;
+            color: var(--emergency-red);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .emergency-cancel-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
         /* HERO SECTION */
@@ -531,6 +630,8 @@
             padding: 3rem 0;
             margin-top: 5rem;
             border-top: 1px solid rgba(138, 158, 255, 0.2);
+            position: relative;
+            z-index: 1;
         }
 
         .footer-grid {
@@ -704,6 +805,12 @@
             .newsletter {
                 padding: 2rem;
             }
+
+            .emergency-floating-btn {
+                width: 60px;
+                height: 60px;
+                font-size: 1.3rem;
+            }
         }
 
         @media (max-width: 576px) {
@@ -734,6 +841,14 @@
                 position: static;
                 width: 100%;
             }
+
+            .emergency-message {
+                font-size: 1.5rem;
+            }
+
+            .emergency-countdown {
+                font-size: 3.5rem;
+            }
         }
     </style>
 </head>
@@ -741,6 +856,19 @@
     <div class="glow-effect glow-1"></div>
     <div class="glow-effect glow-2"></div>
     <div class="glow-effect glow-3"></div>
+
+    <!-- Emergency Overlay (hidden by default) -->
+    <div class="emergency-overlay" id="emergencyOverlay">
+        <div class="emergency-countdown" id="emergencyCountdown">10</div>
+        <div class="emergency-message">Emergency services are being contacted. Please stay calm.</div>
+        <button class="emergency-cancel-btn" id="emergencyCancelBtn">Cancel Emergency</button>
+    </div>
+
+    <!-- Audio Element for Emergency Alarm -->
+    <audio id="emergencyAlarm" loop>
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-alarm-digital-clock-beep-989.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
 
     <div class="container">
         <header>
@@ -751,7 +879,6 @@
             <nav>
                 <ul>
                     <li><a href="#">Home</a></li>
-                    
                     <li><a href="consult.html">Doctors</a></li>
                     <li><a href="https://www.lalpathlabs.com/">Lab Tests</a></li>
                     <li><a href="blog.html">Health Blog</a></li>
@@ -823,25 +950,25 @@
             <div class="testimonial-grid">
                 <div class="testimonial-card">
                     <div class="testimonial-text">
-                        "I loved how easy and quick CyberPharma made everything — plus, the website’s vibe is so fresh and futuristic, it actually made ordering medicines feel fun!".
+                        "I loved how easy and quick CyberPharma made everything — plus, the website's vibe is so fresh and futuristic, it actually made ordering medicines feel fun!".
                     </div>
                     <div class="testimonial-author">
                         <img src="4review.jpg" alt="Muskan Kadiya." class="author-avatar">
                         <div class="author-info">
                             <h4>Muskan kadyan</h4>
-                            <p.>Pharmacist</p>
+                            <p>Pharmacist</p>
                         </div>
                     </div>
                 </div>
                 <div class="testimonial-card">
                     <div class="testimonial-text">
-                        "CyberPharma isn’t just a pharmacy — it’s a smart business move, combining cutting-edge design with efficient service to build real customer trust and loyalty."
+                        "CyberPharma isn't just a pharmacy — it's a smart business move, combining cutting-edge design with efficient service to build real customer trust and loyalty."
                     </div>
                     <div class="testimonial-author">
                         <img src="1review.jpg" alt="Ritik Dahiya" class="author-avatar">
                         <div class="author-info">
                             <h4>Ritik Dahiya</h4>
-                            <p.>Management Student</p>
+                            <p>Management Student</p>
                         </div>
                     </div>
                 </div>
@@ -853,19 +980,19 @@
                         <img src="5reviews.jpg" alt="Monika Singh" class="author-avatar">
                         <div class="author-info">
                             <h4>Monika Singh</h4>
-                            <p.>Pharmacy Student</p>
+                            <p>Pharmacy Student</p>
                         </div>
                     </div>
                 </div>
                 <div class="testimonial-card">
                     <div class="testimonial-text">
-                        "As an engineer, I’m genuinely impressed — CyberPharma’s UI is clean, futuristic, and incredibly user-friendly, setting a new standard for online healthcare platforms."
+                        "As an engineer, I'm genuinely impressed — CyberPharma's UI is clean, futuristic, and incredibly user-friendly, setting a new standard for online healthcare platforms."
                     </div>
                     <div class="testimonial-author">
                         <img src="6review.jpg" alt="Mayank" class="author-avatar">
                         <div class="author-info">
                             <h4>Mayank</h4>
-                            <p.>Engineering Student</p.>
+                            <p>Engineering Student</p>
                         </div>
                     </div>
                 </div>
@@ -877,7 +1004,7 @@
                         <img src="2review.jpg" alt="Deepak Yadav" class="author-avatar">
                         <div class="author-info">
                             <h4>Deepak Yadav</h4>
-                            <p.>Shopkeeper</p>
+                            <p>Shopkeeper</p>
                         </div>
                     </div>
                 </div>
@@ -889,7 +1016,7 @@
                         <img src="3review.jpg" alt="Punit Yadav." class="author-avatar">
                         <div class="author-info">
                             <h4>Punit Yadav</h4>
-                            <p.> Junior Pharmacist</p>
+                            <p> Junior Pharmacist</p>
                         </div>
                     </div>
                 </div>
@@ -967,9 +1094,60 @@
         </footer>
     </div>
 
+    <!-- Emergency Floating Button -->
+    <button class="emergency-floating-btn" id="emergencyBtn">
+        <i class="fas fa-bell"></i>
+        <audio>
+            <source src="ok.mp3" type="audio/mpeg">
+        </audio>
+    </button>
+
     <script>
         // Enhanced animations and interactions
         document.addEventListener('DOMContentLoaded', function() {
+            // Emergency Button Functionality
+            const emergencyBtn = document.getElementById('emergencyBtn');
+            const emergencyOverlay = document.getElementById('emergencyOverlay');
+            const emergencyCountdown = document.getElementById('emergencyCountdown');
+            const emergencyCancelBtn = document.getElementById('emergencyCancelBtn');
+            const emergencyAlarm = document.getElementById('emergencyAlarm');
+            
+            let countdown;
+            let seconds = 10;
+
+            emergencyBtn.addEventListener('click', function() {
+                // Show overlay
+                emergencyOverlay.classList.add('active');
+                
+                // Start alarm
+                emergencyAlarm.play();
+                
+                // Start countdown
+                countdown = setInterval(function() {
+                    seconds--;
+                    emergencyCountdown.textContent = seconds;
+                    
+                    if (seconds <= 0) {
+                        clearInterval(countdown);
+                        window.location.href = 'emergency.html';
+                    }
+                }, 1000);
+            });
+
+            emergencyCancelBtn.addEventListener('click', function() {
+                // Hide overlay
+                emergencyOverlay.classList.remove('active');
+                
+                // Stop alarm
+                emergencyAlarm.pause();
+                emergencyAlarm.currentTime = 0;
+                
+                // Reset countdown
+                clearInterval(countdown);
+                seconds = 10;
+                emergencyCountdown.textContent = seconds;
+            });
+
             // Animate elements when they come into view
             const animateOnScroll = function() {
                 const elements = document.querySelectorAll('.feature-card, .testimonial-card');
@@ -1198,7 +1376,7 @@
             }
             
             // Pharmacy order simulation
-            const orderMedsBtn = document.querySelector('.secondary-button[href="pharm.html"]');
+            const orderMedsBtn = document.querySelector('.secondary-button[href="e-store.html"]');
             if (orderMedsBtn) {
                 orderMedsBtn.addEventListener('click', (e) => {
                     // In a real app, this would redirect to pharmacy page
@@ -1223,31 +1401,6 @@
                     // In a real app, you would send this to your analytics platform
                     console.log('Link clicked:', this.href);
                 });
-            });
-            
-            // Dark mode toggle (example - could be implemented fully)
-            const darkModeToggle = document.createElement('div');
-            darkModeToggle.innerHTML = '<i class="fas fa-moon"></i>';
-            darkModeToggle.style.position = 'fixed';
-            darkModeToggle.style.bottom = '2rem';
-            darkModeToggle.style.right = '2rem';
-            darkModeToggle.style.background = 'rgba(138, 158, 255, 0.2)';
-            darkModeToggle.style.width = '50px';
-            darkModeToggle.style.height = '50px';
-            darkModeToggle.style.borderRadius = '50%';
-            darkModeToggle.style.display = 'flex';
-            darkModeToggle.style.alignItems = 'center';
-            darkModeToggle.style.justifyContent = 'center';
-            darkModeToggle.style.cursor = 'pointer';
-            darkModeToggle.style.zIndex = '1000';
-            darkModeToggle.style.color = 'var(--cyber-white)';
-            darkModeToggle.style.fontSize = '1.2rem';
-            darkModeToggle.style.border = '1px solid rgba(138, 158, 255, 0.3)';
-            document.body.appendChild(darkModeToggle);
-            
-            darkModeToggle.addEventListener('click', () => {
-                // This is just a placeholder - you'd need to implement full dark mode
-                console.log('Dark mode toggle clicked - would switch themes in a full implementation');
             });
         });
     </script>
