@@ -3,511 +3,659 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEON//MED AI DIAGNOSTIC</title>
+    <title>MediGlitch+ | Neural Symptom Scan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap');
-        
+        /* Base Styles (Reused from MediGlitch+) */
         :root {
-            --neon-blue: #0ff0fc;
-            --neon-blue-dark: #00a2ff;
-            --neon-purple: #bc13fe;
-            --dark-bg: #0a0a1a;
-            --darker-bg: #050510;
-            --grid-line: rgba(0, 162, 255, 0.1);
+            --electric-blue: #4a6bff;
+            --neon-cyan: #00f5d4;
+            --deep-midnight: #0a0f2e;
+            --soft-glitch: #8a9eff;
+            --cyber-white: #f0f4ff;
+            --pulse-pink: #ff3e9d;
+            --matrix-green: #00ff9d;
+            --ai-purple: #b388ff;
         }
-        
-        body {
-            font-family: 'Rajdhani', sans-serif;
-            line-height: 1.6;
-            color: #e0e0e0;
+
+        * {
             margin: 0;
-            padding: 20px;
-            background-color: var(--dark-bg);
-            background-image: 
-                linear-gradient(var(--grid-line) 1px, transparent 1px),
-                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
-            background-size: 30px 30px;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Outfit', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, var(--deep-midnight) 0%, #1a1f4a 100%);
+            color: var(--cyber-white);
             min-height: 100vh;
+            overflow-x: hidden;
         }
-        
-        h1, h2, h3 {
-            font-family: 'Orbitron', sans-serif;
-            text-transform: uppercase;
-            letter-spacing: 2px;
-        }
-        
-        h1 {
-            color: var(--neon-blue);
-            text-align: center;
-            margin-bottom: 30px;
-            font-size: 2.5rem;
-            text-shadow: 0 0 10px rgba(0, 242, 252, 0.5);
-            position: relative;
-        }
-        
-        h1::after {
-            content: "";
-            display: block;
-            width: 100px;
-            height: 3px;
-            background: linear-gradient(90deg, var(--neon-blue), var(--neon-purple));
-            margin: 10px auto;
-        }
-        
-        .container {
-            background-color: rgba(10, 10, 26, 0.8);
-            border-radius: 5px;
-            padding: 30px;
-            box-shadow: 0 0 20px rgba(0, 242, 252, 0.2);
-            border: 1px solid var(--neon-blue);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .container::before {
-            content: "";
-            position: absolute;
-            top: -2px;
-            left: -2px;
-            right: -2px;
-            bottom: -2px;
-            border-radius: 5px;
-            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple), var(--neon-blue));
-            z-index: -1;
-            animation: borderGlow 3s linear infinite;
-            opacity: 0.5;
-        }
-        
-        @keyframes borderGlow {
-            0% { filter: blur(5px); opacity: 0.3; }
-            50% { filter: blur(7px); opacity: 0.6; }
-            100% { filter: blur(5px); opacity: 0.3; }
-        }
-        
-        .symptom-input {
-            margin-bottom: 30px;
-        }
-        
-        .symptom-input label {
-            display: block;
-            margin-bottom: 10px;
-            color: var(--neon-blue);
-            font-weight: 600;
-        }
-        
-        textarea {
-            width: 100%;
-            padding: 15px;
-            border: 1px solid var(--neon-blue);
-            border-radius: 3px;
-            font-size: 16px;
-            resize: vertical;
-            min-height: 120px;
-            background-color: rgba(0, 0, 0, 0.3);
-            color: #fff;
-            font-family: 'Rajdhani', sans-serif;
-            transition: all 0.3s;
-        }
-        
-        textarea:focus {
-            outline: none;
-            border-color: var(--neon-purple);
-            box-shadow: 0 0 10px rgba(188, 19, 254, 0.5);
-        }
-        
-        button {
-            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
-            color: #000;
-            border: none;
-            padding: 12px 30px;
-            font-size: 16px;
-            font-weight: 600;
-            border-radius: 3px;
-            cursor: pointer;
-            transition: all 0.3s;
-            display: block;
-            margin: 30px auto;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-family: 'Orbitron', sans-serif;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        button:hover {
-            box-shadow: 0 0 15px rgba(0, 242, 252, 0.7);
-            transform: translateY(-2px);
-        }
-        
-        button::before {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-            transition: 0.5s;
-        }
-        
-        button:hover::before {
-            left: 100%;
-        }
-        
-        .result {
-            margin-top: 30px;
-            padding: 25px;
-            border-radius: 3px;
-            background-color: rgba(0, 0, 0, 0.3);
-            border: 1px solid var(--neon-blue);
-            display: none;
-        }
-        
-        .condition {
-            font-weight: bold;
-            color: var(--neon-blue);
-            margin-bottom: 15px;
-            font-size: 1.5rem;
-            text-shadow: 0 0 5px rgba(0, 242, 252, 0.5);
-        }
-        
-        .medication {
-            margin-top: 25px;
-            padding: 20px;
-            background-color: rgba(0, 162, 255, 0.1);
-            border-left: 3px solid var(--neon-blue);
-        }
-        
-        .warning {
-            margin-top: 30px;
-            padding: 20px;
-            background-color: rgba(255, 0, 0, 0.1);
-            border-left: 3px solid #ff003c;
-            font-size: 14px;
-        }
-        
-        .loading {
-            text-align: center;
-            display: none;
-            margin: 30px 0;
-        }
-        
-        .spinner {
-            border: 4px solid rgba(0, 242, 252, 0.1);
-            border-radius: 50%;
-            border-top: 4px solid var(--neon-blue);
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto 15px;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .symptom-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .symptom-tag {
-            background-color: rgba(0, 162, 255, 0.2);
-            color: var(--neon-blue);
-            padding: 8px 15px;
-            border-radius: 3px;
-            font-size: 14px;
-            cursor: pointer;
-            border: 1px solid var(--neon-blue);
-            transition: all 0.3s;
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 600;
-        }
-        
-        .symptom-tag:hover {
-            background-color: rgba(0, 242, 252, 0.3);
-            box-shadow: 0 0 10px rgba(0, 242, 252, 0.3);
-        }
-        
-        /* Cyberpunk terminal-like effect */
-        .terminal-effect {
+
+        .glow-effect {
             position: fixed;
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, var(--electric-blue) 0%, transparent 70%);
+            filter: blur(80px);
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .glow-1 { top: -50px; left: -50px; }
+        .glow-2 { bottom: -50px; right: -50px; background: radial-gradient(circle, var(--ai-purple) 0%, transparent 70%); }
+        .glow-3 { top: 30%; right: 20%; background: radial-gradient(circle, var(--matrix-green) 0%, transparent 70%); }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+
+        /* HEADER (Same as original) */
+        header {
+            background: rgba(10, 15, 46, 0.8);
+            backdrop-filter: blur(10px);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid rgba(138, 158, 255, 0.2);
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.8rem;
+            font-weight: 700;
+            background: linear-gradient(90deg, var(--pulse-pink), var(--neon-cyan));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo i {
+            font-size: 2rem;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--cyber-white);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .nav-links a:hover {
+            color: var(--neon-cyan);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--neon-cyan);
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        .btn {
+            background: linear-gradient(90deg, var(--pulse-pink), var(--neon-cyan));
+            color: var(--deep-midnight);
+            padding: 0.8rem 1.5rem;
+            border-radius: 50px;
+            font-weight: 600;
+            border: none;
+            cursor: pointer;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 62, 157, 0.4);
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255, 62, 157, 0.6);
+        }
+
+        /* AI SCAN HERO */
+        .hero {
+            background: linear-gradient(135deg, rgba(179, 136, 255, 0.3), rgba(74, 107, 255, 0.3)), 
+                        url('https://images.unsplash.com/photo-1635070041078-e363dbe005cb?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            padding: 6rem 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            pointer-events: none;
-            background: repeating-linear-gradient(
-                0deg,
-                rgba(0, 242, 252, 0.05),
-                rgba(0, 242, 252, 0.05) 1px,
-                transparent 1px,
-                transparent 2px
-            );
-            z-index: 9999;
-            opacity: 0.3;
+            background: linear-gradient(90deg, 
+                          rgba(10, 15, 46, 0.3) 0%, 
+                          rgba(179, 136, 255, 0.1) 50%, 
+                          rgba(10, 15, 46, 0.3) 100%);
+            animation: scanline 8s linear infinite;
         }
-        
-        /* Glitch effect on hover for container */
-        .container:hover {
-            animation: glitch 0.5s linear infinite;
+
+        @keyframes scanline {
+            0% { transform: translateY(-100%); }
+            100% { transform: translateY(100%); }
         }
-        
-        @keyframes glitch {
-            0% { transform: translate(0); }
-            20% { transform: translate(-2px, 2px); }
-            40% { transform: translate(-2px, -2px); }
-            60% { transform: translate(2px, 2px); }
-            80% { transform: translate(2px, -2px); }
-            100% { transform: translate(0); }
+
+        .hero h2 {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(90deg, var(--cyber-white), var(--ai-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
         }
-        
-        /* Responsive design */
+
+        .hero p {
+            font-size: 1.3rem;
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            color: rgba(240, 244, 255, 0.9);
+            position: relative;
+        }
+
+        /* SCAN CONTAINER */
+        .scan-container {
+            background: rgba(138, 158, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 2.5rem;
+            margin: 3rem auto;
+            border: 1px solid rgba(138, 158, 255, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            max-width: 800px;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 2rem;
+            background: linear-gradient(90deg, var(--ai-purple), var(--matrix-green));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* SYMPTOM INPUT */
+        .symptom-form .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.8rem;
+            font-weight: 500;
+            color: var(--neon-cyan);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(10, 15, 46, 0.5);
+            border: 1px solid rgba(138, 158, 255, 0.3);
+            border-radius: 8px;
+            color: var(--cyber-white);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--neon-cyan);
+            box-shadow: 0 0 0 3px rgba(0, 245, 212, 0.2);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .scan-btn {
+            background: linear-gradient(90deg, var(--ai-purple), var(--neon-cyan));
+            color: var(--deep-midnight);
+            border: none;
+            padding: 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .scan-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(179, 136, 255, 0.4);
+        }
+
+        /* RESULTS SECTION */
+        .results {
+            display: none;
+            margin-top: 2rem;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .diagnosis-card, .treatment-card {
+            background: rgba(10, 15, 46, 0.5);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--ai-purple);
+        }
+
+        .diagnosis-card {
+            border-left-color: var(--pulse-pink);
+        }
+
+        .treatment-card {
+            border-left-color: var(--matrix-green);
+        }
+
+        .results h3 {
+            color: var(--neon-cyan);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .results p, .results ul {
+            color: rgba(240, 244, 255, 0.8);
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+
+        .results ul {
+            padding-left: 1.5rem;
+        }
+
+        .results li {
+            margin-bottom: 0.5rem;
+            position: relative;
+        }
+
+        .results li:before {
+            content: '▹';
+            position: absolute;
+            left: -1rem;
+            color: var(--neon-cyan);
+        }
+
+        .confidence-meter {
+            height: 8px;
+            background: rgba(138, 158, 255, 0.2);
+            border-radius: 4px;
+            margin: 1rem 0;
+            overflow: hidden;
+        }
+
+        .confidence-level {
+            height: 100%;
+            background: linear-gradient(90deg, var(--pulse-pink), var(--matrix-green));
+            border-radius: 4px;
+            width: 0;
+            transition: width 1s ease;
+        }
+
+        .severity {
+            display: inline-block;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-left: 0.5rem;
+        }
+
+        .severity.low {
+            background: rgba(0, 245, 212, 0.2);
+            color: var(--neon-cyan);
+        }
+
+        .severity.medium {
+            background: rgba(255, 165, 0, 0.2);
+            color: #ffa500;
+        }
+
+        .severity.high {
+            background: rgba(255, 62, 157, 0.2);
+            color: var(--pulse-pink);
+        }
+
+        /* LOADING ANIMATION */
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 2rem 0;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(138, 158, 255, 0.2);
+            border-top: 4px solid var(--ai-purple);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* RESPONSIVE */
         @media (max-width: 768px) {
-            body {
-                padding: 10px;
+            .navbar {
+                flex-direction: column;
+                padding: 1rem;
             }
             
-            .container {
-                padding: 20px;
+            .hero h2 {
+                font-size: 2.2rem;
             }
             
-            h1 {
-                font-size: 1.8rem;
+            .hero p {
+                font-size: 1.1rem;
             }
+            
+            .scan-container {
+                padding: 1.5rem;
+            }
+        }
+
+        /* GLITCH EFFECT */
+        @keyframes glitch {
+            0% { text-shadow: 0.05em 0 0 var(--pulse-pink), -0.05em -0.025em 0 var(--electric-blue); }
+            14% { text-shadow: 0.05em 0 0 var(--pulse-pink), -0.05em -0.025em 0 var(--electric-blue); }
+            15% { text-shadow: -0.05em -0.025em 0 var(--pulse-pink), 0.025em 0.025em 0 var(--electric-blue); }
+            49% { text-shadow: -0.05em -0.025em 0 var(--pulse-pink), 0.025em 0.025em 0 var(--electric-blue); }
+            50% { text-shadow: 0.025em 0.05em 0 var(--pulse-pink), 0.05em 0 0 var(--electric-blue); }
+            99% { text-shadow: 0.025em 0.05em 0 var(--pulse-pink), 0.05em 0 0 var(--electric-blue); }
+            100% { text-shadow: -0.025em 0 0 var(--pulse-pink), -0.025em -0.025em 0 var(--electric-blue); }
+        }
+
+        .glitch-text {
+            animation: glitch 5s infinite;
         }
     </style>
 </head>
 <body>
-    <div class="terminal-effect"></div>
+    <div class="glow-effect glow-1"></div>
+    <div class="glow-effect glow-2"></div>
+    <div class="glow-effect glow-3"></div>
+
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <div class="logo">
+                    <i class="fas fa-robot"></i>
+                    <span class="glitch-text">MediGlitch+</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="Home.html">Home</a></li>
+                    <li><a href="#">Doctors</a></li>
+                    <li><a href="blood.html">Blood</a></li>
+                    <li><a href="fitness.html">Fitness</a></li>
+                    <li><a href="#" class="active">AI Scan</a></li>
+                </ul>
+                <a href="#" class="btn"><i class="fas fa-terminal"></i> Login</a>
+            </nav>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <div class="container">
+            <h2>Neural <span class="glitch-text">Symptom Scan</span></h2>
+            <p>Our quantum-trained AI analyzes your symptoms with 92.7% accuracy to suggest possible conditions and treatments.</p>
+            <a href="#scanner" class="btn" style="background: linear-gradient(90deg, var(--ai-purple), var(--pulse-pink));">
+                <i class="fas fa-brain"></i> Start Scan
+            </a>
+        </div>
+    </section>
     
     <div class="container">
-        <h1>NEON//MED AI DIAGNOSTIC</h1>
-        
-        <div class="symptom-input">
-            <label for="symptomInput">> DESCRIBE SYMPTOMS [SYNTAX: "headache, fever, sore_throat"]</label>
-            <textarea id="symptomInput" placeholder="> INPUT DETECTED..."></textarea>
+        <section id="scanner" class="scan-container">
+            <h2 class="section-title">AI <span class="glitch-text">Health Scanner</span></h2>
             
-            <div class="symptom-tags" id="commonSymptoms">
-                <div class="symptom-tag">headache</div>
-                <div class="symptom-tag">fever</div>
-                <div class="symptom-tag">cough</div>
-                <div class="symptom-tag">sore_throat</div>
-                <div class="symptom-tag">nausea</div>
-                <div class="symptom-tag">fatigue</div>
-                <div class="symptom-tag">body_aches</div>
-                <div class="symptom-tag">dizziness</div>
-            </div>
-        </div>
-        
-        <button id="analyzeBtn">INITIATE SCAN</button>
-        
-        <div class="loading" id="loadingIndicator">
-            <div class="spinner"></div>
-            <p>ANALYZING BIOMETRICS...</p>
-        </div>
-        
-        <div class="result" id="resultContainer">
-            <h2>> DIAGNOSTIC RESULTS</h2>
-            <div id="conditionResult" class="condition"></div>
-            <div id="descriptionResult"></div>
+            <form id="symptomForm" class="symptom-form">
+                <div class="form-group">
+                    <label for="symptoms"><i class="fas fa-biohazard"></i> Describe Your Symptoms</label>
+                    <textarea id="symptoms" class="form-control" placeholder="E.g. Fever, headache, sore throat for 3 days..." required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="duration"><i class="far fa-clock"></i> Duration</label>
+                    <select id="duration" class="form-control" required>
+                        <option value="">Select Duration</option>
+                        <option value="1">Less than 24 hours</option>
+                        <option value="2">1-3 days</option>
+                        <option value="3">3-7 days</option>
+                        <option value="4">1-2 weeks</option>
+                        <option value="5">More than 2 weeks</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="severity"><i class="fas fa-thermometer-half"></i> Severity</label>
+                    <select id="severity" class="form-control" required>
+                        <option value="">Select Severity</option>
+                        <option value="1">Mild (doesn't interfere with daily activities)</option>
+                        <option value="2">Moderate (some interference)</option>
+                        <option value="3">Severe (can't perform daily activities)</option>
+                    </select>
+                </div>
+                
+                <button type="submit" class="scan-btn">
+                    <i class="fas fa-search"></i> Analyze Symptoms
+                </button>
+            </form>
             
-            <div class="medication">
-                <h3>> RECOMMENDED TREATMENT</h3>
-                <div id="medicationResult"></div>
-                <p><em>WARNING: CONSULT MEDICAL PROFESSIONAL BEFORE ADMINISTRATION</em></p>
+            <div class="loading">
+                <div class="loading-spinner"></div>
+                <p>Quantum neural network analyzing your symptoms...</p>
             </div>
             
-            <div class="warning">
-                <h3>> SYSTEM ALERT</h3>
-                <p>This diagnostic tool provides preliminary analysis only. NEON//MED systems are not a substitute for professional medical advice. Always consult qualified medical personnel for health-related decisions. [Ref: Protocol 451.9]</p>
+            <div class="results" id="results">
+                <div class="diagnosis-card">
+                    <h3><i class="fas fa-diagnoses"></i> Probable Diagnosis</h3>
+                    <p id="diagnosis-name">Common Cold (Viral Upper Respiratory Infection)</p>
+                    <div class="confidence-meter">
+                        <div class="confidence-level" id="confidence-level" style="width: 78%;"></div>
+                    </div>
+                    <p>AI Confidence: <strong>78%</strong></p>
+                    <p id="diagnosis-desc">A viral infection affecting the nose and throat. Typically mild but can be uncomfortable.</p>
+                    <p>Severity: <span class="severity low">Low</span></p>
+                </div>
+                
+                <div class="treatment-card">
+                    <h3><i class="fas fa-prescription-bottle-alt"></i> Recommended Treatment</h3>
+                    <p><strong>Self-care measures:</strong></p>
+                    <ul id="treatment-list">
+                        <li>Rest and hydrate (2-3L water daily)</li>
+                        <li>Over-the-counter pain relievers (Paracetamol 500mg every 6 hours as needed)</li>
+                        <li>Saltwater gargle for sore throat</li>
+                        <li>Steam inhalation 2-3 times daily</li>
+                    </ul>
+                    <p><strong>When to see a doctor:</strong></p>
+                    <ul id="warning-list">
+                        <li>Fever above 102°F (39°C) for more than 3 days</li>
+                        <li>Difficulty breathing</li>
+                        <li>Symptoms worsening after 7 days</li>
+                    </ul>
+                </div>
             </div>
-        </div>
+        </section>
     </div>
+    
+    <footer>
+        <div class="container">
+            <!-- Your existing footer content -->
+        </div>
+    </footer>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const analyzeBtn = document.getElementById('analyzeBtn');
-            const symptomInput = document.getElementById('symptomInput');
-            const resultContainer = document.getElementById('resultContainer');
-            const loadingIndicator = document.getElementById('loadingIndicator');
-            const conditionResult = document.getElementById('conditionResult');
-            const descriptionResult = document.getElementById('descriptionResult');
-            const medicationResult = document.getElementById('medicationResult');
-            const commonSymptoms = document.getElementById('commonSymptoms');
+        // AI Symptom Analyzer
+        document.getElementById('symptomForm').addEventListener('submit', function(e) {
+            e.preventDefault();
             
-            // Add typing effect to textarea
-            symptomInput.addEventListener('focus', function() {
-                if (this.value === '') {
-                    const placeholderText = "> INPUT DETECTED...";
-                    let i = 0;
-                    const typing = setInterval(() => {
-                        this.value = placeholderText.substring(0, i);
-                        i++;
-                        if (i > placeholderText.length) clearInterval(typing);
-                    }, 50);
-                }
-            });
+            // Show loading animation
+            document.querySelector('.loading').style.display = 'block';
+            document.getElementById('results').style.display = 'none';
             
-            // Add click handlers for common symptoms
-            commonSymptoms.querySelectorAll('.symptom-tag').forEach(tag => {
-                tag.addEventListener('click', function() {
-                    const currentText = symptomInput.value.trim();
-                    const symptom = this.textContent.trim();
-                    
-                    if (currentText === '' || currentText === "> INPUT DETECTED...") {
-                        symptomInput.value = symptom;
-                    } else {
-                        symptomInput.value = currentText + ', ' + symptom;
-                    }
-                });
-            });
-            
-            analyzeBtn.addEventListener('click', function() {
-                const symptoms = symptomInput.value.trim();
+            // Simulate AI processing delay
+            setTimeout(function() {
+                // Hide loading, show results
+                document.querySelector('.loading').style.display = 'none';
+                document.getElementById('results').style.display = 'block';
                 
-                if (!symptoms || symptoms === "> INPUT DETECTED...") {
-                    alert('> ERROR: NO SYMPTOM DATA DETECTED');
-                    return;
-                }
+                // Get user inputs
+                const symptoms = document.getElementById('symptoms').value.toLowerCase();
+                const duration = document.getElementById('duration').value;
+                const severity = document.getElementById('severity').value;
                 
-                // Show loading indicator
-                loadingIndicator.style.display = 'block';
-                resultContainer.style.display = 'none';
+                // Simple symptom matching (in a real app, this would connect to an AI API)
+                let diagnosis, confidence, treatment, warnings;
                 
-                // Simulate scanning effect
-                const scanText = document.querySelector('#loadingIndicator p');
-                const scanDots = ['.', '..', '...'];
-                let dotCount = 0;
-                const scanInterval = setInterval(() => {
-                    scanText.textContent = 'ANALYZING BIOMETRICS' + scanDots[dotCount % 3];
-                    dotCount++;
-                }, 300);
-                
-                // Simulate AI processing delay
-                setTimeout(function() {
-                    clearInterval(scanInterval);
-                    analyzeSymptoms(symptoms);
-                    loadingIndicator.style.display = 'none';
-                    resultContainer.style.display = 'block';
-                    
-                    // Add glitch effect when results appear
-                    resultContainer.style.animation = 'glitch 0.2s linear 3';
-                    setTimeout(() => {
-                        resultContainer.style.animation = '';
-                    }, 600);
-                }, 2000);
-            });
-            
-            function analyzeSymptoms(symptoms) {
-                // Convert to lowercase for easier matching
-                const symptomsLower = symptoms.toLowerCase();
-                
-                // Diagnostic matrix
-                let condition = '';
-                let description = '';
-                let medication = '';
-                
-                // Condition patterns
-                if (containsAll(symptomsLower, ['fever', 'cough', 'body_aches', 'fatigue'])) {
-                    condition = 'INFLUENZA (FLU) DETECTED';
-                    description = 'Biometric analysis indicates influenza viral infection. Symptoms match 87% of flu cases. Isolate and hydrate.';
-                    medication = '> TREATMENT PROTOCOL:<br><br>' +
-                                 '- Acetaminophen (Tylenol) or ibuprofen (Advil) for fever/aches<br>' +
-                                 '- Antiviral medications if within 48hrs of onset<br>' +
-                                 '- Rest and fluid intake mandatory';
+                if (symptoms.includes('fever') && symptoms.includes('cough') && symptoms.includes('fatigue')) {
+                    diagnosis = "Influenza (Flu)";
+                    confidence = 85;
+                    treatment = [
+                        "Antiviral medication (Oseltamivir if within 48hrs of symptoms)",
+                        "Rest and fluids",
+                        "Ibuprofen 400mg every 6 hours for fever",
+                        "Throat lozenges for cough"
+                    ];
+                    warnings = [
+                        "High fever not improving after 3 days",
+                        "Difficulty breathing",
+                        "Bluish lips or face"
+                    ];
                 } 
-                else if (containsAll(symptomsLower, ['sore_throat', 'fever', 'swollen_glands'])) {
-                    condition = 'STREP THROAT POSITIVE';
-                    description = 'Bacterial infection likely (87% confidence). Seek professional confirmation.';
-                    medication = '> TREATMENT PROTOCOL:<br><br>' +
-                                 '- Antibiotics required (penicillin/amoxicillin)<br>' +
-                                 '- Pain management authorized<br>' +
-                                 '- Quarantine recommended until 24hrs post-antibiotics';
+                else if (symptoms.includes('headache') && symptoms.includes('nausea') && symptoms.includes('light sensitivity')) {
+                    diagnosis = "Migraine";
+                    confidence = 72;
+                    treatment = [
+                        "Dark, quiet room",
+                        "Sumatriptan 50mg at onset",
+                        "Hydration with electrolytes",
+                        "Cold compress on forehead"
+                    ];
+                    warnings = [
+                        "Headache with stiff neck and fever",
+                        "Sudden severe headache (thunderclap)",
+                        "Neurological symptoms (vision loss, weakness)"
+                    ];
                 }
-                else if (containsAll(symptomsLower, ['headache', 'nausea', 'sensitivity_to_light'])) {
-                    condition = 'MIGRAINE DETECTED';
-                    description = 'Neurological pattern matches migraine (92% confidence). Light and sound sensitivity confirmed.';
-                    medication = '> TREATMENT PROTOCOL:<br><br>' +
-                                 '- Dark environment required<br>' +
-                                 '- NSAIDs authorized<br>' +
-                                 '- Hydration mandatory<br>' +
-                                 '- Triptans if prescribed';
-                }
-                else if (containsAny(symptomsLower, ['runny_nose', 'sneezing', 'congestion']) && 
-                        !containsAny(symptomsLower, ['fever'])) {
-                    condition = 'COMMON COLD VIRUS';
-                    description = 'Rhinovirus detected (78% confidence). Non-critical but contagious.';
-                    medication = '> TREATMENT PROTOCOL:<br><br>' +
-                                 '- Symptom management only<br>' +
-                                 '- Decongestants authorized<br>' +
-                                 '- Rest recommended';
-                }
-                else if (containsAll(symptomsLower, ['heartburn', 'chest_pain', 'acid_taste'])) {
-                    condition = 'ACID REFLUX (GERD)';
-                    description = 'Gastric distress detected. Esophageal irritation confirmed.';
-                    medication = '> TREATMENT PROTOCOL:<br><br>' +
-                                 '- Antacids authorized<br>' +
-                                 '- Dietary modification required<br>' +
-                                 '- Elevate sleeping position';
-                }
-                else if (containsAny(symptomsLower, ['rash', 'itching', 'hives'])) {
-                    condition = 'ALLERGIC REACTION DETECTED';
-                    description = 'Histamine response confirmed. Identify and eliminate allergen.';
-                    medication = '> TREATMENT PROTOCOL:<br><br>' +
-                                 '- Antihistamines authorized<br>' +
-                                 '- Topical steroids if severe<br>' +
-                                 '- Epinephrine if anaphylaxis suspected';
-                }
-                else if (containsAny(symptomsLower, ['diarrhea', 'vomiting', 'stomach_pain'])) {
-                    condition = 'GASTROENTERITIS';
-                    description = 'Digestive system compromised. Viral/bacterial pathogen likely.';
-                    medication = '> TREATMENT PROTOCOL:<br><br>' +
-                                 '- Hydration critical<br>' +
-                                 '- Electrolyte replacement<br>' +
-                                 '- BRAT diet authorized<br>' +
-                                 '- Quarantine recommended';
+                else if (symptoms.includes('heartburn') && symptoms.includes('bloating') && symptoms.includes('belching')) {
+                    diagnosis = "Acid Reflux (GERD)";
+                    confidence = 68;
+                    treatment = [
+                        "Omeprazole 20mg daily before breakfast",
+                        "Smaller, frequent meals",
+                        "Avoid spicy/fatty foods and caffeine",
+                        "Elevate head during sleep"
+                    ];
+                    warnings = [
+                        "Difficulty swallowing",
+                        "Unintentional weight loss",
+                        "Persistent vomiting"
+                    ];
                 }
                 else {
-                    condition = 'SYMPTOM ANALYSIS INCONCLUSIVE';
-                    description = 'Pattern recognition failed (43% confidence). Manual medical consultation required.';
-                    medication = '> STANDARD PROTOCOL:<br><br>' +
-                                '- Symptom monitoring<br>' +
-                                '- Basic pain management authorized<br>' +
-                                '- Seek professional evaluation';
+                    // Default to common cold
+                    diagnosis = "Common Cold (Viral Upper Respiratory Infection)";
+                    confidence = 78;
+                    treatment = [
+                        "Rest and hydrate (2-3L water daily)",
+                        "Over-the-counter pain relievers (Paracetamol 500mg every 6 hours as needed)",
+                        "Saltwater gargle for sore throat",
+                        "Steam inhalation 2-3 times daily"
+                    ];
+                    warnings = [
+                        "Fever above 102°F (39°C) for more than 3 days",
+                        "Difficulty breathing",
+                        "Symptoms worsening after 7 days"
+                    ];
                 }
                 
-                // Display results with typewriter effect
-                typeWriter(conditionResult, condition, 50);
-                typeWriter(descriptionResult, description, 20);
-                typeWriter(medicationResult, medication, 10);
-            }
-            
-            // Helper functions
-            function containsAll(text, terms) {
-                return terms.every(term => text.includes(term));
-            }
-            
-            function containsAny(text, terms) {
-                return terms.some(term => text.includes(term));
-            }
-            
-            // Typewriter effect
-            function typeWriter(element, text, speed) {
-                let i = 0;
-                element.innerHTML = '';
-                const typing = setInterval(() => {
-                    if (i < text.length) {
-                        element.innerHTML += text.charAt(i);
-                        i++;
-                    } else {
-                        clearInterval(typing);
-                    }
-                }, speed);
-            }
+                // Update results
+                document.getElementById('diagnosis-name').textContent = diagnosis;
+                document.getElementById('confidence-level').style.width = confidence + '%';
+                document.querySelector('#results p:nth-of-type(2)').innerHTML = `AI Confidence: <strong>${confidence}%</strong>`;
+                
+                // Update treatment list
+                const treatmentList = document.getElementById('treatment-list');
+                treatmentList.innerHTML = '';
+                treatment.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = item;
+                    treatmentList.appendChild(li);
+                });
+                
+                // Update warnings
+                const warningList = document.getElementById('warning-list');
+                warningList.innerHTML = '';
+                warnings.forEach(item => {
+                    const li = document.createElement('li');
+                    li.textContent = item;
+                    warningList.appendChild(li);
+                });
+                
+                // Update severity indicator
+                const severityIndicator = document.querySelector('.severity');
+                severityIndicator.className = 'severity ';
+                if (severity == 3) {
+                    severityIndicator.classList.add('high');
+                    severityIndicator.textContent = 'High';
+                } else if (severity == 2) {
+                    severityIndicator.classList.add('medium');
+                    severityIndicator.textContent = 'Medium';
+                } else {
+                    severityIndicator.classList.add('low');
+                    severityIndicator.textContent = 'Low';
+                }
+                
+            }, 2000); // Simulate 2 second AI processing
         });
     </script>
 </body>

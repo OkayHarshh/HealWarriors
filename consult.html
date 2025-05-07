@@ -598,23 +598,21 @@
             <nav class="navbar">
                 <div class="logo">
                     <i class="fas fa-user-md"></i>
-                    <span class="glitch-text">MediGlitch+</span>
+                    <span class="glitch-text">CyberPharma</span>
                 </div>
                 <ul class="nav-links">
                     <li><a href="Home.html">Home</a></li>
-                    <li><a href="#">Doctors</a></li>
-                    <li><a href="#">Specialties</a></li>
                     <li><a href="blood.html">Blood Banks</a></li>
-                    <li><a href="#">Contact</a></li>
+                    <li><a href="aboutus.html">About Us</a></li>
                 </ul>
-                <a href="#" class="btn"><i class="fas fa-terminal"></i> Login</a>
+                
             </nav>
         </div>
     </header>
     
     <section class="hero">
         <div class="container">
-            <h2>CyberDoc <span class="glitch-text">Consultation</span></h2>
+            <h2>MediGlitch+ <span class="glitch-text">Consultation</span></h2>
             <p>Next-gen telemedicine with AI diagnostics and blockchain-secured health records. Connect with top specialists in the metaverse.</p>
             <a href="#doctors" class="btn"><i class="fas fa-bolt"></i> Find a Doctor</a>
         </div>
@@ -664,25 +662,25 @@
             <div class="doctors-grid">
                 <div class="doctor-card">
                     <div class="doctor-img">
-                        <img src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Dr. Poonam Malik">
+                        <img src="#" alt="Dr. Navneet kaur">
                         <span class="doctor-badge"><i class="fas fa-shield-alt"></i> Verified</span>
                     </div>
                     <div class="doctor-info">
-                        <h3>Dr. Poonam Malik</h3>
-                        <span class="doctor-specialty"><i class="fas fa-heartbeat"></i> Cardiologist</span>
+                        <h3>Dr. Navneet kaur</h3>
+                        <span class="doctor-specialty"><i class="fas fa-heartbeat"></i> Diabetologist</span>
                         <div class="doctor-rating">
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star"></i>
                             <i class="fas fa-star-half-alt"></i>
-                            <span>(124 reviews)</span>
+                            <span>(1204 reviews)</span>
                         </div>
                         <div class="doctor-availability">
                             <span><i class="far fa-clock"></i> Available Today</span>
                             <span><i class="fas fa-vr-cardboard"></i> VR Consult</span>
                         </div>
-                        <button class="book-btn" data-doctor="Dr. Poonam Malik" data-specialty="Cardiologist">
+                        <button class="book-btn" data-doctor="Dr. Pragi" data-specialty="Cardiologist">
                             <i class="fas fa-lock"></i> Secure Booking
                         </button>
                     </div>
@@ -690,11 +688,11 @@
                 
                 <div class="doctor-card">
                     <div class="doctor-img">
-                        <img src="https://images.unsplash.com/photo-1594824476967-48c8b964273f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Dr. Renuka Arora">
+                        <img src="Varun.jpg" alt="Dr. Varun">
                         <span class="doctor-badge"><i class="fas fa-shield-alt"></i> Verified</span>
                     </div>
                     <div class="doctor-info">
-                        <h3>Dr. Renuka Arora</h3>
+                        <h3>Dr. Varun</h3>
                         <span class="doctor-specialty"><i class="fas fa-allergies"></i> Dermatologist</span>
                         <div class="doctor-rating">
                             <i class="fas fa-star"></i>
@@ -708,7 +706,7 @@
                             <span><i class="far fa-clock"></i> Available Tomorrow</span>
                             <span><i class="fas fa-robot"></i> AI-Assisted</span>
                         </div>
-                        <button class="book-btn" data-doctor="Dr. Renuka Arora" data-specialty="Dermatologist">
+                        <button class="book-btn" data-doctor="Dr. Varun" data-specialty="Dermatologist">
                             <i class="fas fa-lock"></i> Secure Booking
                         </button>
                     </div>
@@ -716,11 +714,11 @@
                 
                 <div class="doctor-card">
                     <div class="doctor-img">
-                        <img src="https://images.unsplash.com/photo-1622253692010-333f2da6031d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" alt="Dr. Pradeep Dalal">
+                        <img src="prof-dr-pragi.jpg" alt="Dr. Pragi">
                         <span class="doctor-badge"><i class="fas fa-shield-alt"></i> Verified</span>
                     </div>
                     <div class="doctor-info">
-                        <h3>Dr. Pradeep Dalal</h3>
+                        <h3>Dr. jyoti Dalal</h3>
                         <span class="doctor-specialty"><i class="fas fa-baby"></i> Pediatrician</span>
                         <div class="doctor-rating">
                             <i class="fas fa-star"></i>
@@ -873,4 +871,168 @@
                     </div>
                     
                     <div class="form-group">
-                        <label for="symptoms"><i class="fas fa-biohazard
+                        <label for="symptoms"><i class="fas fa-biohazard"></i> Symptoms</label>
+                            <textarea id="symptoms" class="form-control" rows="3" placeholder="Describe your symptoms..."></textarea>
+                        </div>
+                        
+                        <button type="submit" class="submit-booking">
+                            <i class="fas fa-lock"></i> Confirm Secure Booking
+                        </button>
+                    </form>
+                    
+                    <div class="success-message">
+                        <i class="fas fa-check-circle"></i>
+                        <h3>Booking Confirmed!</h3>
+                        <p>Your CyberConsult has been scheduled.</p>
+                        <p>A confirmation has been sent to your neural implant.</p>
+                        <p><strong id="confirmedDoctor"></strong></p>
+                        <p id="confirmedDateTime"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>MediGlitch+</h3>
+                    <p>Next-generation telemedicine platform with AI diagnostics and blockchain-secured health records.</p>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#">Home</a></li>
+                        <li><a href="#">About Us</a></li>
+                        
+                        <li><a href="#">Specialties</a></li>
+                        <li><a href="blood.html">Blood Banks</a></li>
+                        
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Services</h3>
+                    <ul>
+                        <li><a href="#">VR Consultations</a></li>
+                        <li><a href="#">AI Diagnostics</a></li>
+                        <li><a href="#">Neural Health Scan</a></li>
+                        <li><a href="#">Genomic Analysis</a></li>
+                        <li><a href="#">Cyber Pharmacy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> xyz,Delhi</li>
+                        <li><i class="fas fa-phone-alt"></i> +91 12345 67890</li>
+                        <li><i class="fas fa-envelope"></i> support@cyberpharma.tech</li>
+                        <li><i class="fas fa-globe"></i> www.cyberpharma.tech</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>© 2025 Cyberpharma | mediGlitch+ - CyberDoc Consultation Network</p>
+                
+            </div>
+        </footer>
+    
+        <script>
+            // Booking Modal Functionality
+            const bookButtons = document.querySelectorAll('.book-btn');
+            const modal = document.getElementById('bookingModal');
+            const closeModal = document.querySelector('.close-modal');
+            const bookingForm = document.getElementById('bookingForm');
+            const successMessage = document.querySelector('.success-message');
+            
+            bookButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const doctor = button.getAttribute('data-doctor');
+                    const specialty = button.getAttribute('data-specialty');
+                    
+                    document.getElementById('bookingDoctor').value = doctor;
+                    document.getElementById('bookingSpecialty').value = specialty;
+                    
+                    modal.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                });
+            });
+            
+            closeModal.addEventListener('click', () => {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            });
+            
+            window.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }
+            });
+            
+            bookingForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                // Get form values
+                const doctor = document.getElementById('bookingDoctor').value;
+                const name = document.getElementById('patientName').value;
+                const date = document.getElementById('appointmentDate').value;
+                const time = document.getElementById('appointmentTime').value;
+                
+                // Format date
+                const formattedDate = new Date(date).toLocaleDateString('en-US', {
+                    weekday: 'long',
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                
+                // Show success message
+                document.getElementById('confirmedDoctor').textContent = `Doctor: ${doctor}`;
+                document.getElementById('confirmedDateTime').textContent = `${formattedDate} at ${time.split('-')[0]}`;
+                
+                // Hide form and show success
+                bookingForm.style.display = 'none';
+                successMessage.style.display = 'block';
+                
+                // Reset form after 5 seconds
+                setTimeout(() => {
+                    bookingForm.style.display = 'block';
+                    successMessage.style.display = 'none';
+                    bookingForm.reset();
+                    modal.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                }, 5000);
+            });
+            
+            // Search Form Submission
+            const searchForm = document.querySelector('.search-form');
+            searchForm.addEventListener('submit', (e) => {
+                e.preventDefault();
+                // Here you would typically filter the doctors grid based on search criteria
+                // For demo purposes, we'll just scroll to the doctors section
+                document.getElementById('doctors').scrollIntoView({ behavior: 'smooth' });
+            });
+            
+            // Glitch effect for elements with glitch-text class
+            const glitchElements = document.querySelectorAll('.glitch-text');
+            setInterval(() => {
+                glitchElements.forEach(el => {
+                    el.style.animation = 'none';
+                    void el.offsetWidth; // Trigger reflow
+                    el.style.animation = 'glitch 5s infinite';
+                });
+            }, 5000);
+        </script>
+    </body>
+    </html>
+                            
+
+
+
+
+                           

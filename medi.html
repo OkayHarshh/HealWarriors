@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><RX-DELIVERY></RX-DELIVERY> | CyberPharma Delivery</title>
+    <title>RX-DELIVERY | CyberPharma Delivery</title>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -25,94 +25,71 @@
         }
 
         body {
-            background: linear-gradient(135deg, var(--deep-midnight) 0%, #1a1f4a 100%);
+            background: linear-gradient(135deg, var(--deep-midnight), #1a1f4a);
             color: var(--cyber-white);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 40px;
+            padding: 30px;
+            overflow-x: hidden;
         }
 
-        .glow-effect {
+        .glow {
             position: fixed;
-            width: 300px;
-            height: 300px;
+            width: 250px;
+            height: 250px;
             background: radial-gradient(circle, var(--electric-blue) 0%, transparent 70%);
             filter: blur(80px);
             opacity: 0.3;
             z-index: -1;
         }
+        .glow:nth-child(1) { top: 5%; left: 10%; }
+        .glow:nth-child(2) { bottom: 10%; right: 15%; background: radial-gradient(circle, var(--pulse-pink) 0%, transparent 70%); }
+        .glow:nth-child(3) { top: 50%; right: 50%; background: radial-gradient(circle, var(--matrix-green) 0%, transparent 70%); }
 
-        .glow-1 { top: 10%; left: 10%; }
-        .glow-2 { bottom: 10%; right: 10%; background: radial-gradient(circle, var(--pulse-pink) 0%, transparent 70%); }
-        .glow-3 { top: 50%; right: 50%; background: radial-gradient(circle, var(--matrix-green) 0%, transparent 70%); }
-
-        .main-container {
-            width: 100%;
-            max-width: 1200px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .content-box {
-            background: rgba(10, 15, 46, 0.8);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
+        .container {
             width: 100%;
             max-width: 500px;
-            overflow: hidden;
+            background: rgba(10, 15, 46, 0.8);
+            border-radius: 20px;
+            backdrop-filter: blur(12px);
             border: 1px solid rgba(138, 158, 255, 0.3);
-            transition: transform 0.5s ease;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+            overflow: hidden;
+            transition: 0.4s ease;
         }
 
-        .content-box:hover {
+        .container:hover {
             transform: translateY(-5px);
         }
 
         .header {
-            background: linear-gradient(135deg, var(--electric-blue) 0%, var(--neon-cyan) 100%);
-            color: white;
-            padding: 40px 30px;
+            background: linear-gradient(135deg, var(--electric-blue), var(--neon-cyan));
             text-align: center;
-            position: relative;
+            padding: 35px 20px;
         }
 
-        .pill-icon {
-            background-color: rgba(240, 244, 255, 0.2);
-            width: 80px;
-            height: 80px;
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 0 auto 20px;
-            backdrop-filter: blur(5px);
-            border: 2px solid rgba(240, 244, 255, 0.3);
-        }
-
-        .pill-icon i {
-            font-size: 36px;
+        .header i {
             background: linear-gradient(135deg, var(--electric-blue), var(--neon-cyan));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            font-size: 40px;
         }
 
         .header h1 {
-            font-weight: 700;
+            margin-top: 10px;
             font-size: 28px;
-            margin-bottom: 10px;
             background: linear-gradient(90deg, var(--cyber-white), var(--neon-cyan));
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            font-weight: 700;
         }
 
         .header p {
-            opacity: 0.9;
+            margin-top: 8px;
             font-weight: 300;
-            font-size: 16px;
+            opacity: 0.8;
         }
 
         .content {
@@ -120,54 +97,53 @@
         }
 
         .input-group {
-            position: relative;
             margin-bottom: 25px;
         }
 
-        .input-group label {
+        label {
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
+            font-size: 14px;
             color: var(--neon-cyan);
             font-weight: 500;
-            font-size: 14px;
         }
 
-        .input-group input {
+        input {
             width: 100%;
-            padding: 15px 20px;
-            background: rgba(10, 15, 46, 0.5);
+            padding: 15px;
             border: 2px solid rgba(138, 158, 255, 0.3);
             border-radius: 10px;
-            font-size: 16px;
+            background: rgba(10, 15, 46, 0.5);
             color: var(--cyber-white);
+            font-size: 16px;
             transition: all 0.3s ease;
         }
 
-        .input-group input:focus {
+        input:focus {
             outline: none;
             border-color: var(--neon-cyan);
-            box-shadow: 0 0 0 3px rgba(0, 245, 212, 0.3);
+            box-shadow: 0 0 8px var(--neon-cyan);
         }
 
-        .input-group input::placeholder {
+        input::placeholder {
             color: rgba(240, 244, 255, 0.5);
         }
 
         .btn {
-            background: linear-gradient(135deg, var(--pulse-pink) 0%, var(--electric-blue) 100%);
-            color: var(--cyber-white);
-            border: none;
             width: 100%;
             padding: 16px;
+            background: linear-gradient(135deg, var(--pulse-pink), var(--electric-blue));
+            border: none;
             border-radius: 10px;
-            font-size: 16px;
+            color: var(--cyber-white);
             font-weight: 600;
+            font-size: 16px;
             cursor: pointer;
-            transition: all 0.3s ease;
             display: flex;
-            align-items: center;
             justify-content: center;
+            align-items: center;
             gap: 10px;
+            transition: 0.3s ease;
         }
 
         .btn:hover {
@@ -175,28 +151,8 @@
             box-shadow: 0 8px 20px rgba(255, 62, 157, 0.4);
         }
 
-        .btn:active {
-            transform: translateY(0);
-        }
-
-        .btn i {
-            transition: transform 0.3s ease;
-        }
-
-        .btn:hover i {
-            transform: translateX(5px);
-        }
-
-        .disclaimer {
-            margin-top: 25px;
-            font-size: 12px;
-            color: rgba(240, 244, 255, 0.6);
-            text-align: center;
-            line-height: 1.6;
-        }
-
         .popular-searches {
-            margin: 25px 0;
+            margin: 30px 0;
         }
 
         .popular-searches h3 {
@@ -217,28 +173,37 @@
 
         .tag {
             background: rgba(138, 158, 255, 0.1);
-            color: var(--cyber-white);
             padding: 8px 16px;
             border-radius: 20px;
             font-size: 12px;
+            color: var(--cyber-white);
+            border: 1px solid rgba(138, 158, 255, 0.3);
             cursor: pointer;
             transition: all 0.3s ease;
-            border: 1px solid rgba(138, 158, 255, 0.3);
         }
 
         .tag:hover {
             background: rgba(0, 245, 212, 0.2);
             border-color: var(--neon-cyan);
+            transform: scale(1.05);
+        }
+
+        .disclaimer {
+            margin-top: 20px;
+            font-size: 12px;
+            text-align: center;
+            color: rgba(240, 244, 255, 0.6);
+            line-height: 1.6;
         }
 
         .powered-by {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
             margin-top: 20px;
-            color: rgba(240, 244, 255, 0.5);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
             font-size: 12px;
+            color: rgba(240, 244, 255, 0.5);
         }
 
         .powered-by img {
@@ -246,144 +211,68 @@
             filter: brightness(0) invert(1);
         }
 
-        .error-message {
-            color: var(--pulse-pink);
-            font-size: 12px;
-            margin-top: 8px;
-            display: none;
-        }
-
-        @media (max-width: 600px) {
-            body {
-                padding: 20px;
-            }
-            
-            .header {
-                padding: 30px 20px;
-            }
-            
-            .header h1 {
-                font-size: 24px;
-            }
-            
-            .content {
-                padding: 25px 20px;
-            }
+        @media(max-width:600px){
+            .content{padding:20px;}
+            .header{padding:25px 20px;}
+            input{padding:12px;}
         }
     </style>
 </head>
 <body>
-    <div class="glow-effect glow-1"></div>
-    <div class="glow-effect glow-2"></div>
-    <div class="glow-effect glow-3"></div>
+    <div class="glow"></div>
+    <div class="glow"></div>
+    <div class="glow"></div>
 
-    <div class="main-container">
-        <div class="content-box">
-            <div class="header">
-                <div class="pill-icon">
-                    <i class="fas fa-prescription-bottle-alt"></i>
-                </div>
-                <h1>RX DELIVERY</h1>
-                <p> medicine delivery online</p>
+    <div class="container">
+        <div class="header">
+            <i class="fas fa-prescription-bottle-alt"></i>
+            <h1>RX DELIVERY</h1>
+            <p>medicine delivery online</p>
+        </div>
+        <div class="content">
+            <div class="input-group">
+                <label for="medicineName">MEDICINE NAME</label>
+                <input type="text" id="medicineName" placeholder="e.g. Neurozyme-X, BioBoost-N...">
             </div>
-            
-            <div class="content">
-                <div class="input-group">
-                    <label for="medicineName"><i class="fas fa-capsules"></i> MEDICINE NAME</label>
-                    <input type="text" id="medicineName" placeholder="e.g. Neurozyme-X, BioBoost-N..." autocomplete="off">
-                    <div class="error-message" id="errorMessage">
-                        ERROR: INPUT REQUIRED
-                    </div>
+
+            <div class="popular-searches">
+                <h3><i class="fas fa-bolt"></i> FREQUENT ORDERS</h3>
+                <div class="popular-tags">
+                    <div class="tag" onclick="setMedicine('Neurozyme-X 500mg')">Neurozyme-X</div>
+                    <div class="tag" onclick="setMedicine('BioBoost-N Capsules')">BioBoost-N</div>
+                    <div class="tag" onclick="setMedicine('CycloViral Inhibitor')">CycloViral</div>
                 </div>
-                
-                <div class="popular-searches">
-                    <h3><i class="fas fa-bolt"></i> FREQUENT ORDERS</h3>
-                    <div class="popular-tags">
-                        <div class="tag" onclick="setMedicine('Neurozyme-X 500mg')">Neurozyme-X</div>
-                        <div class="tag" onclick="setMedicine('BioBoost-N Capsules')">BioBoost-N</div>
-                        <div class="tag" onclick="setMedicine('CycloViral Inhibitor')">CycloViral</div>
-                    </div>
-                </div>
-                
-                <button class="btn" id="searchButton" onclick="redirectToPharmEasy()">
-                    <span>ORDER RX DELIVERY</span>
-                    <i class="fas fa-paper-plane"></i>
-                </button>
-                
-                <p class="disclaimer">
-                    *Orders secured with blockchain technology
-                    <br>**Delivery times may vary during peak hours
-                </p>
-                
-                <div class="powered-by">
-                    <span>POWERED BY</span>
-                    <img src="https://assets.pharmeasy.in/web-assets/dist/4d2f7c48.svg" alt="PharmEasy">
-                </div>
+            </div>
+
+            <button class="btn" id="searchButton" onclick="redirectToPharmEasy()">
+                ORDER RX DELIVERY <i class="fas fa-paper-plane"></i>
+            </button>
+
+            <p class="disclaimer">*Orders secured with blockchain technology<br>**Delivery times may vary during peak hours</p>
+            <div class="powered-by">
+                <span>POWERED BY</span>
+                <img src="https://assets.pharmeasy.in/web-assets/dist/4d2f7c48.svg" alt="PharmEasy">
             </div>
         </div>
     </div>
 
     <script>
-        // DOM Elements
         const medicineInput = document.getElementById('medicineName');
-        const searchButton = document.getElementById('searchButton');
-        const errorMessage = document.getElementById('errorMessage');
-        
-        function setMedicine(name) {
+
+        function setMedicine(name){
             medicineInput.value = name;
             medicineInput.focus();
-            errorMessage.style.display = 'none';
-            medicineInput.style.borderColor = 'rgba(138, 158, 255, 0.3)';
         }
-        
-        function showError(message) {
-            errorMessage.textContent = message || 'ERROR: INPUT REQUIRED';
-            errorMessage.style.display = 'block';
-            medicineInput.style.borderColor = 'var(--pulse-pink)';
-        }
-        
-        function redirectToPharmEasy() {
+
+        function redirectToPharmEasy(){
             const medicineName = medicineInput.value.trim();
-            
-            if (!medicineName) {
-                showError();
+            if(!medicineName){
+                alert('Please enter a medicine name!');
                 return;
             }
-            
-            // Show loading state
-            searchButton.innerHTML = '<i class="fas fa-circle-notch fa-spin"></i> SCANNING INVENTORY...';
-            searchButton.disabled = true;
-            
-            // Encode the medicine name for URL
             const encodedName = encodeURIComponent(medicineName);
-            
-            // Redirect after delay
-            setTimeout(() => {
-                window.location.href = `https://pharmeasy.in/search/all?name=${encodedName}`;
-            }, 1500);
+            window.location.href = `https://pharmeasy.in/search/all?name=${encodedName}`;
         }
-        
-        // Allow pressing Enter key to submit
-        medicineInput.addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                redirectToPharmEasy();
-            }
-        });
-        
-        // Validate input on blur
-        medicineInput.addEventListener('blur', function() {
-            if (!medicineInput.value.trim()) {
-                showError();
-            }
-        });
-        
-        // Hide error when user starts typing
-        medicineInput.addEventListener('input', function() {
-            if (medicineInput.value.trim()) {
-                errorMessage.style.display = 'none';
-                medicineInput.style.borderColor = 'rgba(138, 158, 255, 0.3)';
-            }
-        });
     </script>
 </body>
 </html>

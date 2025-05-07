@@ -1,0 +1,1811 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Human Heart Simulation</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f4f8;
+            color: #2d3748;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 20px 0;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        header h1 {
+            color: #c53030;
+            margin: 0;
+            font-size: 2.5rem;
+        }
+        
+        header p {
+            color: #4a5568;
+            font-size: 1.1rem;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        #heart-container {
+            flex: 2;
+            min-width: 700px;
+            height: 600px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .controls-panel {
+            flex: 1;
+            min-width: 300px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .tab-buttons {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .tab-button {
+            padding: 10px 15px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-weight: 600;
+            color: #718096;
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s;
+        }
+        
+        .tab-button.active {
+            color: #c53030;
+            border-bottom: 3px solid #c53030;
+        }
+        
+        .tab-content {
+            display: none;
+            flex: 1;
+            overflow-y: auto;
+        }
+        
+        .tab-content.active {
+            display: block;
+        }
+        
+        .control-group {
+            margin-bottom: 20px;
+        }
+        
+        .control-group h3 {
+            margin-top: 0;
+            color: #c53030;
+            font-size: 1.2rem;
+        }
+        
+        button {
+            background-color: #c53030;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            margin: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #9b2c2c;
+        }
+        
+        button.secondary {
+            background-color: #e2e8f0;
+            color: #4a5568;
+        }
+        
+        button.secondary:hover {
+            background-color: #cbd5e0;
+        }
+        
+        select, input[type="range"] {
+            width: 100%;
+            padding: 8px;
+            border-radius: 5px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 10px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            cursor: pointer;
+        }
+        
+        input[type="checkbox"] {
+            margin-right: 8px;
+        }
+        
+        .info-panel {
+            width: 100%;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        
+        #structure-title {
+            color: #c53030;
+            margin-top: 0;
+            font-size: 1.5rem;
+        }
+        
+        #structure-description {
+            line-height: 1.6;
+        }
+        
+        #structure-description ul {
+            padding-left: 20px;
+        }
+        
+        .blood-flow-animation {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #f8fafc;
+            border-radius: 8px;
+            border-left: 4px solid #c53030;
+        }
+        
+        .animation-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+        }
+        
+        .blood-cell {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            position: relative;
+        }
+        
+        .blood-cell.oxygenated {
+            background-color: #e53e3e;
+            box-shadow: 0 0 0 rgba(229, 62, 62, 0.7);
+            animation: pulse-red 2s infinite;
+        }
+        
+        .blood-cell.deoxygenated {
+            background-color: #3182ce;
+            box-shadow: 0 0 0 rgba(49, 130, 206, 0.7);
+            animation: pulse-blue 2s infinite;
+        }
+        
+        .pathway {
+            height: 4px;
+            background: linear-gradient(90deg, #e53e3e, #3182ce);
+            flex-grow: 1;
+            margin: 0 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .pathway::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, 
+                rgba(255,255,255,0) 0%, 
+                rgba(255,255,255,0.8) 50%, 
+                rgba(255,255,255,0) 100%);
+            animation: shine 3s infinite;
+        }
+        
+        @keyframes pulse-red {
+            0% { box-shadow: 0 0 0 0 rgba(229, 62, 62, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(229, 62, 62, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(229, 62, 62, 0); }
+        }
+        
+        @keyframes pulse-blue {
+            0% { box-shadow: 0 0 0 0 rgba(49, 130, 206, 0.7); }
+            70% { box-shadow: 0 0 0 10px rgba(49, 130, 206, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(49, 130, 206, 0); }
+        }
+        
+        @keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+        
+        .cardiac-cycle {
+            width: 100%;
+            height: 200px;
+            background-color: #fff;
+            border-radius: 8px;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .cycle-graph {
+            position: absolute;
+            bottom: 40px;
+            left: 0;
+            right: 0;
+            height: 160px;
+        }
+        
+        .cycle-labels {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 40px;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+        }
+        
+        .cycle-label {
+            font-size: 0.8rem;
+            color: #718096;
+        }
+        
+        .phase-indicator {
+            position: absolute;
+            top: 10px;
+            left: 0;
+            height: 30px;
+            background-color: rgba(197, 48, 48, 0.1);
+            border-left: 2px solid #c53030;
+            border-right: 2px solid #c53030;
+            transition: left 0.5s, width 0.5s;
+        }
+        
+        .phase-text {
+            position: absolute;
+            top: 50px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            font-weight: bold;
+            color: #c53030;
+        }
+        
+        @media (max-width: 1200px) {
+            #heart-container {
+                min-width: 100%;
+                height: 500px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            #heart-container {
+                height: 400px;
+            }
+            
+            header h1 {
+                font-size: 2rem;
+            }
+        }
+        
+        .loading-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255,255,255,0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            z-index: 100;
+        }
+        
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #e2e8f0;
+            border-top: 5px solid #c53030;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Human Heart 3D Simulation</h1>
+            <p>Explore the anatomy and physiology of the human heart in interactive 3D</p>
+        </header>
+        
+        <div class="main-content">
+            <div id="heart-container">
+                <div class="loading-overlay">
+                    <div class="spinner"></div>
+                    <p>Loading heart model...</p>
+                </div>
+            </div>
+            
+            <div class="controls-panel">
+                <div class="tab-buttons">
+                    <button class="tab-button active" data-tab="anatomy">Anatomy</button>
+                    <button class="tab-button" data-tab="physiology">Physiology</button>
+                    <button class="tab-button" data-tab="pathology">Pathology</button>
+                </div>
+                
+                <div class="tab-content active" id="anatomy-tab">
+                    <div class="control-group">
+                        <h3>View Options</h3>
+                        <button id="reset-view">Reset View</button>
+                        <button id="toggle-transparency">Toggle Transparency</button>
+                        <button id="toggle-blood-flow">Toggle Blood Flow</button>
+                    </div>
+                    
+                    <div class="control-group">
+                        <h3>Layers</h3>
+                        <label><input type="checkbox" id="show-epicardium" checked> Epicardium</label>
+                        <label><input type="checkbox" id="show-myocardium" checked> Myocardium</label>
+                        <label><input type="checkbox" id="show-endocardium" checked> Endocardium</label>
+                        <label><input type="checkbox" id="show-valves" checked> Valves</label>
+                        <label><input type="checkbox" id="show-vessels" checked> Blood Vessels</label>
+                    </div>
+                    
+                    <div class="control-group">
+                        <h3>Highlight Structures</h3>
+                        <select id="structure-select">
+                            <option value="">Select a structure...</option>
+                            <optgroup label="Chambers">
+                                <option value="left-atrium">Left Atrium</option>
+                                <option value="left-ventricle">Left Ventricle</option>
+                                <option value="right-atrium">Right Atrium</option>
+                                <option value="right-ventricle">Right Ventricle</option>
+                            </optgroup>
+                            <optgroup label="Valves">
+                                <option value="aortic-valve">Aortic Valve</option>
+                                <option value="mitral-valve">Mitral Valve</option>
+                                <option value="pulmonary-valve">Pulmonary Valve</option>
+                                <option value="tricuspid-valve">Tricuspid Valve</option>
+                            </optgroup>
+                            <optgroup label="Vessels">
+                                <option value="aorta">Aorta</option>
+                                <option value="pulmonary-artery">Pulmonary Artery</option>
+                                <option value="pulmonary-veins">Pulmonary Veins</option>
+                                <option value="vena-cava">Vena Cava</option>
+                                <option value="coronary-arteries">Coronary Arteries</option>
+                            </optgroup>
+                            <optgroup label="Conduction System">
+                                <option value="sa-node">SA Node</option>
+                                <option value="av-node">AV Node</option>
+                                <option value="bundle-of-his">Bundle of His</option>
+                                <option value="purkinje-fibers">Purkinje Fibers</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <h3>Dissection</h3>
+                        <button id="coronal-cut">Coronal Cut</button>
+                        <button id="sagittal-cut">Sagittal Cut</button>
+                        <button id="transverse-cut">Transverse Cut</button>
+                        <button id="reset-cut">Reset Dissection</button>
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="physiology-tab">
+                    <div class="control-group">
+                        <h3>Cardiac Cycle</h3>
+                        <div class="cardiac-cycle">
+                            <div class="cycle-graph" id="pressure-graph"></div>
+                            <div class="phase-indicator"></div>
+                            <div class="phase-text">Atrial Systole</div>
+                            <div class="cycle-labels">
+                                <div class="cycle-label">0ms</div>
+                                <div class="cycle-label">100ms</div>
+                                <div class="cycle-label">200ms</div>
+                                <div class="cycle-label">300ms</div>
+                                <div class="cycle-label">400ms</div>
+                                <div class="cycle-label">500ms</div>
+                                <div class="cycle-label">600ms</div>
+                                <div class="cycle-label">700ms</div>
+                                <div class="cycle-label">800ms</div>
+                            </div>
+                        </div>
+                        <button id="play-cycle">Play Cycle</button>
+                        <button id="pause-cycle">Pause</button>
+                        <input type="range" id="cycle-speed" min="0.5" max="2" step="0.1" value="1">
+                        <label for="cycle-speed">Animation Speed</label>
+                    </div>
+                    
+                    <div class="control-group">
+                        <h3>Electrical Activity</h3>
+                        <button id="show-ecg">Show ECG</button>
+                        <button id="show-conduction">Show Conduction</button>
+                        <button id="pacemaker-control">Pacemaker Control</button>
+                    </div>
+                    
+                    <div class="control-group">
+                        <h3>Hemodynamics</h3>
+                        <label>Cardiac Output: <span id="cardiac-output">5.0</span> L/min</label>
+                        <input type="range" id="co-slider" min="2" max="10" step="0.5" value="5">
+                        
+                        <label>Heart Rate: <span id="heart-rate">72</span> bpm</label>
+                        <input type="range" id="hr-slider" min="40" max="120" step="1" value="72">
+                        
+                        <label>Stroke Volume: <span id="stroke-volume">70</span> mL</label>
+                        <input type="range" id="sv-slider" min="30" max="120" step="1" value="70">
+                    </div>
+                </div>
+                
+                <div class="tab-content" id="pathology-tab">
+                    <div class="control-group">
+                        <h3>Cardiac Conditions</h3>
+                        <select id="pathology-select">
+                            <option value="">Select a condition...</option>
+                            <option value="myocardial-infarction">Myocardial Infarction</option>
+                            <option value="heart-failure">Heart Failure</option>
+                            <option value="arrhythmia">Arrhythmia</option>
+                            <option value="valvular-disease">Valvular Disease</option>
+                            <option value="cardiomyopathy">Cardiomyopathy</option>
+                            <option value="congenital-defects">Congenital Defects</option>
+                        </select>
+                    </div>
+                    
+                    <div class="control-group">
+                        <h3>Simulation</h3>
+                        <button id="start-pathology">Start Simulation</button>
+                        <button id="stop-pathology" disabled>Stop Simulation</button>
+                    </div>
+                    
+                    <div class="control-group">
+                        <h3>Diagnostic Tools</h3>
+                        <button id="show-angiogram">Angiogram</button>
+                        <button id="show-echo">Echocardiogram</button>
+                        <button id="show-mri">Cardiac MRI</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="info-panel">
+            <h2 id="structure-title">Human Heart Overview</h2>
+            <div id="structure-description">
+                <p>The human heart is a muscular organ about the size of a fist, located in the thoracic cavity between the lungs. It functions as a pump to circulate blood throughout the body via the circulatory system.</p>
+                <p><strong>Key Characteristics:</strong></p>
+                <ul>
+                    <li><strong>Weight:</strong> 250-350 grams in adults</li>
+                    <li><strong>Dimensions:</strong> Approximately 12 cm long, 8 cm wide, and 6 cm thick</li>
+                    <li><strong>Location:</strong> Mediastinum, between the second and fifth intercostal spaces</li>
+                    <li><strong>Orientation:</strong> Apex points downward, forward, and to the left</li>
+                    <li><strong>Function:</strong> Pumps ~5 liters of blood per minute at rest (70 mL per beat)</li>
+                </ul>
+                <p>Select a structure from the dropdown to learn detailed information about its anatomy and physiology.</p>
+            </div>
+            
+            <div class="blood-flow-animation">
+                <h3>Blood Circulation Pathway</h3>
+                <div class="animation-container">
+                    <div class="blood-cell oxygenated" title="Oxygenated Blood"></div>
+                    <div class="pathway"></div>
+                    <div class="blood-cell deoxygenated" title="Deoxygenated Blood"></div>
+                </div>
+                <p>The heart maintains a double circulatory system: pulmonary circulation (heart → lungs → heart) and systemic circulation (heart → body → heart). Oxygenated blood (red) is pumped to the body, while deoxygenated blood (blue) is sent to the lungs for reoxygenation.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Three.js and related libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/DRACOLoader.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <script>
+        // Main Application
+        class HeartSimulation {
+            constructor() {
+                this.scene = null;
+                this.camera = null;
+                this.renderer = null;
+                this.controls = null;
+                this.heartModel = null;
+                this.bloodFlow = null;
+                this.animationId = null;
+                this.cardiacCycleInterval = null;
+                this.currentPhase = 0;
+                this.cycleSpeed = 1;
+                this.isPlaying = false;
+                this.highlightedStructure = null;
+                
+                this.init();
+                this.setupEventListeners();
+                this.startBloodFlowAnimation();
+                this.createPressureGraph();
+            }
+            
+            init() {
+                // Scene setup
+                this.scene = new THREE.Scene();
+                this.scene.background = new THREE.Color(0xf0f4f8);
+                
+                // Camera
+                this.camera = new THREE.PerspectiveCamera(75, 700 / 600, 0.1, 1000);
+                this.camera.position.set(0, 0, 5);
+                
+                // Renderer
+                this.renderer = new THREE.WebGLRenderer({ antialias: true });
+                this.renderer.setSize(700, 600);
+                this.renderer.shadowMap.enabled = true;
+                document.getElementById('heart-container').appendChild(this.renderer.domElement);
+                
+                // Lighting
+                const ambientLight = new THREE.AmbientLight(0x404040, 0.5);
+                this.scene.add(ambientLight);
+                
+                const directionalLight1 = new THREE.DirectionalLight(0xffffff, 0.8);
+                directionalLight1.position.set(1, 1, 1);
+                directionalLight1.castShadow = true;
+                this.scene.add(directionalLight1);
+                
+                const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.5);
+                directionalLight2.position.set(-1, -1, -1);
+                this.scene.add(directionalLight2);
+                
+                // Orbit controls
+                this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
+                this.controls.enableDamping = true;
+                this.controls.dampingFactor = 0.25;
+                this.controls.minDistance = 3;
+                this.controls.maxDistance = 10;
+                
+                // Create simplified heart model (in a real app, you'd load a detailed 3D model)
+                this.createHeartModel();
+                
+                // Start animation loop
+                this.animate();
+                
+                // Hide loading overlay
+                setTimeout(() => {
+                    document.querySelector('.loading-overlay').style.display = 'none';
+                }, 1500);
+            }
+            
+            createHeartModel() {
+                // Create a group to hold all heart components
+                this.heartModel = new THREE.Group();
+                
+                // Main heart shape (simplified)
+                const heartGeometry = this.createHeartGeometry();
+                const heartMaterial = new THREE.MeshPhongMaterial({
+                    color: 0xc53030,
+                    transparent: true,
+                    opacity: 0.9,
+                    shininess: 30
+                });
+                
+                const heartMesh = new THREE.Mesh(heartGeometry, heartMaterial);
+                heartMesh.castShadow = true;
+                heartMesh.receiveShadow = true;
+                heartMesh.name = "heart";
+                this.heartModel.add(heartMesh);
+                
+                // Add chambers (simplified representation)
+                this.addHeartChambers();
+                
+                // Add valves (simplified representation)
+                this.addHeartValves();
+                
+                // Add major blood vessels
+                this.addBloodVessels();
+                
+                // Add conduction system (simplified)
+                this.addConductionSystem();
+                
+                // Position and add to scene
+                this.heartModel.position.set(0, -0.5, 0);
+                this.scene.add(this.heartModel);
+                
+                // Create blood flow particles
+                this.createBloodFlow();
+            }
+            
+            createHeartGeometry() {
+                // Create a basic heart shape (in a real app, use a detailed 3D model)
+                const shape = new THREE.Shape();
+                shape.moveTo(0, 0);
+                shape.bezierCurveTo(0.25, 0.25, 0.5, 0, 0.5, 0.25);
+                shape.bezierCurveTo(0.5, 0, 0.75, 0.25, 1, 0);
+                shape.bezierCurveTo(1.25, -0.25, 0.75, -0.5, 0.5, -0.25);
+                shape.bezierCurveTo(0.25, -0.5, -0.25, -0.25, 0, 0);
+                
+                const extrudeSettings = {
+                    steps: 2,
+                    depth: 1.5,
+                    bevelEnabled: true,
+                    bevelThickness: 0.2,
+                    bevelSize: 0.2,
+                    bevelOffset: 0,
+                    bevelSegments: 10
+                };
+                
+                return new THREE.ExtrudeGeometry(shape, extrudeSettings);
+            }
+            
+            addHeartChambers() {
+                // Left Atrium
+                const leftAtriumGeometry = new THREE.SphereGeometry(0.5, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2);
+                const leftAtriumMaterial = new THREE.MeshPhongMaterial({
+                    color: 0xff6b6b,
+                    transparent: true,
+                    opacity: 0.7,
+                    side: THREE.DoubleSide
+                });
+                const leftAtrium = new THREE.Mesh(leftAtriumGeometry, leftAtriumMaterial);
+                leftAtrium.position.set(-0.8, 0.6, 0);
+                leftAtrium.rotation.x = Math.PI / 4;
+                leftAtrium.name = "left-atrium";
+                this.heartModel.add(leftAtrium);
+                
+                // Left Ventricle
+                const leftVentricleGeometry = new THREE.CylinderGeometry(0.4, 0.6, 1, 32);
+                const leftVentricleMaterial = new THREE.MeshPhongMaterial({
+                    color: 0xff5252,
+                    transparent: true,
+                    opacity: 0.7
+                });
+                const leftVentricle = new THREE.Mesh(leftVentricleGeometry, leftVentricleMaterial);
+                leftVentricle.position.set(-0.8, -0.4, 0);
+                leftVentricle.rotation.x = Math.PI / 2;
+                leftVentricle.name = "left-ventricle";
+                this.heartModel.add(leftVentricle);
+                
+                // Right Atrium
+                const rightAtriumGeometry = new THREE.SphereGeometry(0.5, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2);
+                const rightAtriumMaterial = new THREE.MeshPhongMaterial({
+                    color: 0x6b9bff,
+                    transparent: true,
+                    opacity: 0.7,
+                    side: THREE.DoubleSide
+                });
+                const rightAtrium = new THREE.Mesh(rightAtriumGeometry, rightAtriumMaterial);
+                rightAtrium.position.set(0.8, 0.6, 0);
+                rightAtrium.rotation.x = Math.PI / 4;
+                rightAtrium.name = "right-atrium";
+                this.heartModel.add(rightAtrium);
+                
+                // Right Ventricle
+                const rightVentricleGeometry = new THREE.CylinderGeometry(0.4, 0.6, 1, 32);
+                const rightVentricleMaterial = new THREE.MeshPhongMaterial({
+                    color: 0x4285f4,
+                    transparent: true,
+                    opacity: 0.7
+                });
+                const rightVentricle = new THREE.Mesh(rightVentricleGeometry, rightVentricleMaterial);
+                rightVentricle.position.set(0.8, -0.4, 0);
+                rightVentricle.rotation.x = Math.PI / 2;
+                rightVentricle.name = "right-ventricle";
+                this.heartModel.add(rightVentricle);
+            }
+            
+            addHeartValves() {
+                // Aortic Valve
+                const aorticValveGeometry = new THREE.ConeGeometry(0.3, 0.2, 32);
+                const aorticValveMaterial = new THREE.MeshPhongMaterial({
+                    color: 0x4caf50,
+                    transparent: true,
+                    opacity: 0.8
+                });
+                const aorticValve = new THREE.Mesh(aorticValveGeometry, aorticValveMaterial);
+                aorticValve.position.set(-0.8, -1.1, 0);
+                aorticValve.rotation.x = Math.PI;
+                aorticValve.name = "aortic-valve";
+                this.heartModel.add(aorticValve);
+                
+                // Mitral Valve
+                const mitralValveGeometry = new THREE.CircleGeometry(0.25, 32);
+                const mitralValveMaterial = new THREE.MeshPhongMaterial({
+                    color: 0x4caf50,
+                    transparent: true,
+                    opacity: 0.8,
+                    side: THREE.DoubleSide
+                });
+                const mitralValve = new THREE.Mesh(mitralValveGeometry, mitralValveMaterial);
+                mitralValve.position.set(-0.8, 0.1, 0);
+                mitralValve.rotation.x = Math.PI / 2;
+                mitralValve.name = "mitral-valve";
+                this.heartModel.add(mitralValve);
+                
+                // Pulmonary Valve
+                const pulmonaryValveGeometry = new THREE.ConeGeometry(0.25, 0.2, 32);
+                const pulmonaryValveMaterial = new THREE.MeshPhongMaterial({
+                    color: 0x4caf50,
+                    transparent: true,
+                    opacity: 0.8
+                });
+                const pulmonaryValve = new THREE.Mesh(pulmonaryValveGeometry, pulmonaryValveMaterial);
+                pulmonaryValve.position.set(0.8, -1.1, 0.5);
+                pulmonaryValve.rotation.x = Math.PI;
+                pulmonaryValve.rotation.z = Math.PI / 4;
+                pulmonaryValve.name = "pulmonary-valve";
+                this.heartModel.add(pulmonaryValve);
+                
+                // Tricuspid Valve
+                const tricuspidValveGeometry = new THREE.CircleGeometry(0.3, 32);
+                const tricuspidValveMaterial = new THREE.MeshPhongMaterial({
+                    color: 0x4caf50,
+                    transparent: true,
+                    opacity: 0.8,
+                    side: THREE.DoubleSide
+                });
+                const tricuspidValve = new THREE.Mesh(tricuspidValveGeometry, tricuspidValveMaterial);
+                tricuspidValve.position.set(0.8, 0.1, 0);
+                tricuspidValve.rotation.x = Math.PI / 2;
+                tricuspidValve.name = "tricuspid-valve";
+                this.heartModel.add(tricuspidValve);
+            }
+            
+            addBloodVessels() {
+                // Aorta
+                const aortaGeometry = new THREE.CylinderGeometry(0.2, 0.25, 1.5, 32);
+                const aortaMaterial = new THREE.MeshPhongMaterial({
+                    color: 0xe53935,
+                    transparent: true,
+                    opacity: 0.8
+                });
+                const aorta = new THREE.Mesh(aortaGeometry, aortaMaterial);
+                aorta.position.set(-0.8, -1.5, 0);
+                aorta.rotation.x = Math.PI / 2;
+                aorta.name = "aorta";
+                this.heartModel.add(aorta);
+                
+                // Pulmonary Artery
+                const pulmonaryArteryGeometry = new THREE.CylinderGeometry(0.18, 0.22, 1.2, 32);
+                const pulmonaryArteryMaterial = new THREE.MeshPhongMaterial({
+                    color: 0x1e88e5,
+                    transparent: true,
+                    opacity: 0.8
+                });
+                const pulmonaryArtery = new THREE.Mesh(pulmonaryArteryGeometry, pulmonaryArteryMaterial);
+                pulmonaryArtery.position.set(0.8, -1.4, 0.5);
+                pulmonaryArtery.rotation.x = Math.PI / 2;
+                pulmonaryArtery.rotation.z = Math.PI / 4;
+                pulmonaryArtery.name = "pulmonary-artery";
+                this.heartModel.add(pulmonaryArtery);
+                
+                // Pulmonary Veins (4 veins)
+                const pulmonaryVeinGeometry = new THREE.CylinderGeometry(0.1, 0.12, 0.8, 32);
+                const pulmonaryVeinMaterial = new THREE.MeshPhongMaterial({
+                    color: 0xe53935,
+                    transparent: true,
+                    opacity: 0.8
+                });
+                
+                for (let i = 0; i < 4; i++) {
+                    const angle = (i / 4) * Math.PI * 2;
+                    const vein = new THREE.Mesh(pulmonaryVeinGeometry, pulmonaryVeinMaterial.clone());
+                    vein.position.set(
+                        -0.8 + Math.cos(angle) * 0.3,
+                        1.0 + Math.sin(angle) * 0.3,
+                        0
+                    );
+                    vein.rotation.z = angle;
+                    vein.rotation.y = Math.PI / 2;
+                    vein.name = pulmonary-vein-${i+1};
+                    this.heartModel.add(vein);
+                }
+                
+                // Vena Cava (Superior and Inferior)
+                const venaCavaGeometry = new THREE.CylinderGeometry(0.2, 0.25, 1.2, 32);
+                const venaCavaMaterial = new THREE.MeshPhongMaterial({
+                    color: 0x1e88e5,
+                    transparent: true,
+                    opacity: 0.8
+                });
+                
+                // Superior Vena Cava
+                const superiorVenaCava = new THREE.Mesh(venaCavaGeometry, venaCavaMaterial);
+                superiorVenaCava.position.set(0.8, 1.4, 0);
+                superiorVenaCava.rotation.x = Math.PI / 2;
+                superiorVenaCava.name = "superior-vena-cava";
+                this.heartModel.add(superiorVenaCava);
+                
+                // Inferior Vena Cava
+                const inferiorVenaCava = new THREE.Mesh(venaCavaGeometry, venaCavaMaterial);
+                inferiorVenaCava.position.set(0.8, -1.4, -0.5);
+                inferiorVenaCava.rotation.x = Math.PI / 2;
+                inferiorVenaCava.name = "inferior-vena-cava";
+                this.heartModel.add(inferiorVenaCava);
+                
+                // Coronary Arteries
+                const coronaryGeometry = new THREE.TubeGeometry(
+                    new THREE.CatmullRomCurve3([
+                        new THREE.Vector3(-0.5, 0, 0.5),
+                        new THREE.Vector3(-0.7, -0.3, 0.6),
+                        new THREE.Vector3(-0.8, -0.6, 0.5),
+                        new THREE.Vector3(-0.7, -0.8, 0.4)
+                    ]),
+                    100,
+                    0.05,
+                    8,
+                    false
+                );
+                const coronaryMaterial = new THREE.MeshPhongMaterial({
+                    color: 0xe53935,
+                    transparent: true,
+                    opacity: 0.8
+                });
+                const coronaryArtery = new THREE.Mesh(coronaryGeometry, coronaryMaterial);
+                coronaryArtery.name = "coronary-artery";
+                this.heartModel.add(coronaryArtery);
+            }
+            
+            addConductionSystem() {
+                // SA Node
+                const saNodeGeometry = new THREE.SphereGeometry(0.05, 16, 16);
+                const saNodeMaterial = new THREE.MeshPhongMaterial({
+                    color: 0xffeb3b,
+                    emissive: 0xffeb3b,
+                    emissiveIntensity: 0.5
+                });
+                const saNode = new THREE.Mesh(saNodeGeometry, saNodeMaterial);
+                saNode.position.set(0.8, 0.8, 0);
+                saNode.name = "sa-node";
+                this.heartModel.add(saNode);
+                
+                // AV Node
+                const avNodeGeometry = new THREE.SphereGeometry(0.05, 16, 16);
+                const avNodeMaterial = new THREE.MeshPhongMaterial({
+                    color: 0xffc107,
+                    emissive: 0xffc107,
+                    emissiveIntensity: 0.5
+                });
+                const avNode = new THREE.Mesh(avNodeGeometry, avNodeMaterial);
+                avNode.position.set(0.5, 0.2, 0);
+                avNode.name = "av-node";
+                this.heartModel.add(avNode);
+                
+                // Bundle of His
+                const bundleGeometry = new THREE.CylinderGeometry(0.03, 0.03, 0.5, 8);
+                const bundleMaterial = new THREE.MeshPhongMaterial({
+                    color: 0xff9800,
+                    emissive: 0xff9800,
+                    emissiveIntensity: 0.3
+                });
+                const bundle = new THREE.Mesh(bundleGeometry, bundleMaterial);
+                bundle.position.set(0.3, -0.3, 0);
+                bundle.rotation.z = Math.PI / 2;
+                bundle.name = "bundle-of-his";
+                this.heartModel.add(bundle);
+                
+                // Purkinje Fibers (simplified representation)
+                const purkinjeGeometry = new THREE.BufferGeometry();
+                const positions = [];
+                const colors = [];
+                const color = new THREE.Color(0xff5722);
+                
+                for (let i = 0; i < 50; i++) {
+                    const x = Math.random() * 1.6 - 0.8;
+                    const y = Math.random() * -1.5;
+                    const z = Math.random() * 0.6 - 0.3;
+                    
+                    positions.push(x, y, z);
+                    positions.push(x + (Math.random() - 0.5) * 0.2, 
+                                 y + (Math.random() - 0.5) * 0.2, 
+                                 z + (Math.random() - 0.5) * 0.2);
+                    
+                    colors.push(color.r, color.g, color.b);
+                    colors.push(color.r, color.g, color.b);
+                }
+                
+                purkinjeGeometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+                purkinjeGeometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+                
+                const purkinjeMaterial = new THREE.LineBasicMaterial({
+                    vertexColors: true,
+                    linewidth: 2
+                });
+                
+                const purkinjeFibers = new THREE.LineSegments(purkinjeGeometry, purkinjeMaterial);
+                purkinjeFibers.name = "purkinje-fibers";
+                this.heartModel.add(purkinjeFibers);
+            }
+            
+            createBloodFlow() {
+                this.bloodFlow = new THREE.Group();
+                
+                // Oxygenated blood particles (red)
+                for (let i = 0; i < 200; i++) {
+                    const particle = new THREE.Mesh(
+                        new THREE.SphereGeometry(0.03, 8, 8),
+                        new THREE.MeshBasicMaterial({ color: 0xe53935 })
+                    );
+                    
+                    // Position particles along circulatory paths
+                    if (i < 50) {
+                        // Pulmonary veins to left atrium
+                        const angle = Math.random() * Math.PI * 2;
+                        const radius = 0.3 + Math.random() * 0.2;
+                        particle.position.set(
+                            -0.8 + Math.cos(angle) * radius,
+                            0.8 + Math.sin(angle) * radius,
+                            Math.random() * 0.4 - 0.2
+                        );
+                    } else if (i < 100) {
+                        // Left ventricle to aorta
+                        const angle = Math.random() * Math.PI * 2;
+                        const radius = 0.3 + Math.random() * 0.2;
+                        particle.position.set(
+                            -0.8 + Math.cos(angle) * radius,
+                            -0.5 + Math.sin(angle) * radius,
+                            Math.random() * 0.4 - 0.2
+                        );
+                    } else if (i < 150) {
+                        // Vena cava to right atrium
+                        const angle = Math.random() * Math.PI * 2;
+                        const radius = 0.3 + Math.random() * 0.2;
+                        particle.position.set(
+                            0.8 + Math.cos(angle) * radius,
+                            0.8 + Math.sin(angle) * radius,
+                            Math.random() * 0.4 - 0.2
+                        );
+                    } else {
+                        // Right ventricle to pulmonary artery
+                        const angle = Math.random() * Math.PI * 2;
+                        const radius = 0.3 + Math.random() * 0.2;
+                        particle.position.set(
+                            0.8 + Math.cos(angle) * radius,
+                            -0.5 + Math.sin(angle) * radius,
+                            Math.random() * 0.4 - 0.2
+                        );
+                    }
+                    
+                    this.bloodFlow.add(particle);
+                }
+                
+                // Deoxygenated blood particles (blue)
+                for (let i = 0; i < 200; i++) {
+                    const particle = new THREE.Mesh(
+                        new THREE.SphereGeometry(0.03, 8, 8),
+                        new THREE.MeshBasicMaterial({ color: 0x1e88e5 })
+                    );
+                    
+                    // Position particles along circulatory paths
+                    if (i < 50) {
+                        // Body to vena cava
+                        particle.position.set(
+                            0.8 + (Math.random() - 0.5) * 0.2,
+                            1.2 + Math.random() * 0.5,
+                            (Math.random() - 0.5) * 0.4
+                        );
+                    } else if (i < 100) {
+                        // Right atrium to right ventricle
+                        particle.position.set(
+                            0.8 + (Math.random() - 0.5) * 0.3,
+                            0.2 + Math.random() * 0.4,
+                            (Math.random() - 0.5) * 0.4
+                        );
+                    } else if (i < 150) {
+                        // Pulmonary artery to lungs
+                        particle.position.set(
+                            0.8 + (Math.random() - 0.5) * 0.2,
+                            -1.0 + Math.random() * 0.5,
+                            0.3 + Math.random() * 0.4
+                        );
+                    } else {
+                        // Lungs to pulmonary veins
+                        particle.position.set(
+                            -0.8 + (Math.random() - 0.5) * 0.2,
+                            1.2 + Math.random() * 0.5,
+                            (Math.random() - 0.5) * 0.4
+                        );
+                    }
+                    
+                    this.bloodFlow.add(particle);
+                }
+                
+                this.scene.add(this.bloodFlow);
+            }
+            
+            animate() {
+                this.animationId = requestAnimationFrame(() => this.animate());
+                
+                // Animate blood flow particles
+                if (this.bloodFlow && this.bloodFlow.visible) {
+                    this.bloodFlow.children.forEach((particle, i) => {
+                        // Oxygenated blood flow
+                        if (i < 200) {
+                            if (i < 50) {
+                                // Pulmonary veins → left atrium
+                                particle.position.y -= 0.01;
+                                if (particle.position.y < 0.5) {
+                                    particle.position.y = 0.8 + Math.random() * 0.2;
+                                }
+                            } else if (i < 100) {
+                                // Left ventricle → aorta
+                                particle.position.y -= 0.02;
+                                if (particle.position.y < -1.0) {
+                                    particle.position.y = -0.5 + Math.random() * 0.2;
+                                }
+                            } else if (i < 150) {
+                                // Vena cava → right atrium
+                                particle.position.y -= 0.01;
+                                if (particle.position.y < 0.5) {
+                                    particle.position.y = 0.8 + Math.random() * 0.2;
+                                }
+                            } else {
+                                // Right ventricle → pulmonary artery
+                                particle.position.y -= 0.015;
+                                particle.position.z += 0.01;
+                                if (particle.position.y < -1.2 || particle.position.z > 0.8) {
+                                    particle.position.y = -0.5 + Math.random() * 0.2;
+                                    particle.position.z = Math.random() * 0.4 - 0.2;
+                                }
+                            }
+                        } 
+                        // Deoxygenated blood flow
+                        else {
+                            if (i < 250) {
+                                // Body → vena cava
+                                particle.position.y -= 0.01;
+                                if (particle.position.y < 0.8) {
+                                    particle.position.y = 1.2 + Math.random() * 0.3;
+                                }
+                            } else if (i < 300) {
+                                // Right atrium → right ventricle
+                                particle.position.y -= 0.01;
+                                if (particle.position.y < -0.2) {
+                                    particle.position.y = 0.2 + Math.random() * 0.3;
+                                }
+                            } else if (i < 350) {
+                                // Pulmonary artery → lungs
+                                particle.position.y += 0.01;
+                                particle.position.z += 0.005;
+                                if (particle.position.y > -0.5 || particle.position.z > 0.8) {
+                                    particle.position.y = -1.0 + Math.random() * 0.3;
+                                    particle.position.z = 0.3 + Math.random() * 0.2;
+                                }
+                            } else {
+                                // Lungs → pulmonary veins
+                                particle.position.y -= 0.01;
+                                if (particle.position.y < 0.8) {
+                                    particle.position.y = 1.2 + Math.random() * 0.3;
+                                }
+                            }
+                        }
+                    });
+                }
+                
+                // Update controls
+                this.controls.update();
+                
+                // Render scene
+                this.renderer.render(this.scene, this.camera);
+            }
+            
+            setupEventListeners() {
+                // Tab switching
+                document.querySelectorAll('.tab-button').forEach(button => {
+                    button.addEventListener('click', () => {
+                        document.querySelectorAll('.tab-button').forEach(btn => {
+                            btn.classList.remove('active');
+                        });
+                        button.classList.add('active');
+                        
+                        document.querySelectorAll('.tab-content').forEach(content => {
+                            content.classList.remove('active');
+                        });
+                        document.getElementById(${button.dataset.tab}-tab).classList.add('active');
+                    });
+                });
+                
+                // View controls
+                document.getElementById('reset-view').addEventListener('click', () => {
+                    this.controls.reset();
+                    this.camera.position.set(0, 0, 5);
+                });
+                
+                document.getElementById('toggle-transparency').addEventListener('click', () => {
+                    this.heartModel.traverse(child => {
+                        if (child.isMesh && child.material) {
+                            child.material.transparent = true;
+                            child.material.opacity = child.material.opacity > 0.5 ? 0.3 : 0.9;
+                        }
+                    });
+                });
+                
+                document.getElementById('toggle-blood-flow').addEventListener('click', () => {
+                    this.bloodFlow.visible = !this.bloodFlow.visible;
+                });
+                
+                // Structure selection
+                document.getElementById('structure-select').addEventListener('change', (e) => {
+                    const structure = e.target.value;
+                    if (structure) {
+                        this.highlightStructure(structure);
+                        this.updateInfoPanel(structure);
+                    }
+                });
+                
+                // Cardiac cycle controls
+                document.getElementById('play-cycle').addEventListener('click', () => {
+                    this.startCardiacCycle();
+                });
+                
+                document.getElementById('pause-cycle').addEventListener('click', () => {
+                    this.stopCardiacCycle();
+                });
+                
+                document.getElementById('cycle-speed').addEventListener('input', (e) => {
+                    this.cycleSpeed = parseFloat(e.target.value);
+                });
+                
+                // Hemodynamics controls
+                document.getElementById('hr-slider').addEventListener('input', (e) => {
+                    document.getElementById('heart-rate').textContent = e.target.value;
+                });
+                
+                document.getElementById('sv-slider').addEventListener('input', (e) => {
+                    document.getElementById('stroke-volume').textContent = e.target.value;
+                    this.updateCardiacOutput();
+                });
+                
+                document.getElementById('co-slider').addEventListener('input', (e) => {
+                    document.getElementById('cardiac-output').textContent = e.target.value;
+                });
+            }
+            
+            highlightStructure(structureId) {
+                // Reset all highlights first
+                this.heartModel.traverse(child => {
+                    if (child.isMesh && child.material) {
+                        // Reset to original colors
+                        switch(child.name) {
+                            case "left-atrium":
+                            case "left-ventricle":
+                                child.material.color.setHex(0xff6b6b);
+                                break;
+                            case "right-atrium":
+                            case "right-ventricle":
+                                child.material.color.setHex(0x6b9bff);
+                                break;
+                            case "aortic-valve":
+                            case "mitral-valve":
+                            case "pulmonary-valve":
+                            case "tricuspid-valve":
+                                child.material.color.setHex(0x4caf50);
+                                break;
+                            case "aorta":
+                            case "pulmonary-vein-1":
+                            case "pulmonary-vein-2":
+                            case "pulmonary-vein-3":
+                            case "pulmonary-vein-4":
+                                child.material.color.setHex(0xe53935);
+                                break;
+                            case "pulmonary-artery":
+                            case "superior-vena-cava":
+                            case "inferior-vena-cava":
+                                child.material.color.setHex(0x1e88e5);
+                                break;
+                            case "sa-node":
+                            case "av-node":
+                            case "bundle-of-his":
+                            case "purkinje-fibers":
+                                child.material.emissiveIntensity = 0.5;
+                                break;
+                            default:
+                                child.material.color.setHex(0xc53030);
+                        }
+                    }
+                });
+                
+                // Highlight selected structure
+                const highlightColor = this.getHighlightColor(structureId);
+                
+                this.heartModel.traverse(child => {
+                    if (child.isMesh && child.name.includes(structureId)) {
+                        child.material.color.setHex(highlightColor);
+                        
+                        // Make conduction system nodes glow
+                        if (structureId.includes('node') || structureId.includes('bundle') || structureId.includes('purkinje')) {
+                            child.material.emissiveIntensity = 1.5;
+                        }
+                    }
+                });
+                
+                // Center camera on the structure
+                const structure = this.findStructure(structureId);
+                if (structure) {
+                    this.controls.target.copy(structure.position);
+                }
+            }
+            
+            findStructure(structureId) {
+                let foundStructure = null;
+                
+                this.heartModel.traverse(child => {
+                    if (child.name.includes(structureId)) {
+                        foundStructure = child;
+                    }
+                });
+                
+                return foundStructure;
+            }
+            
+            getHighlightColor(structureId) {
+                switch(structureId) {
+                    case 'left-atrium':
+                    case 'left-ventricle':
+                        return 0xff1744; // Deep red
+                    case 'right-atrium':
+                    case 'right-ventricle':
+                        return 0x2962ff; // Deep blue
+                    case 'aortic-valve':
+                    case 'mitral-valve':
+                    case 'pulmonary-valve':
+                    case 'tricuspid-valve':
+                        return 0x00c853; // Green
+                    case 'aorta':
+                    case 'pulmonary-veins':
+                        return 0xd50000; // Bright red
+                    case 'pulmonary-artery':
+                    case 'vena-cava':
+                        return 0x2962ff; // Bright blue
+                    case 'sa-node':
+                    case 'av-node':
+                    case 'bundle-of-his':
+                    case 'purkinje-fibers':
+                        return 0xffd600; // Yellow
+                    case 'coronary-arteries':
+                        return 0xaa00ff; // Purple
+                    default:
+                        return 0xffffff; // White
+                }
+            }
+            
+            updateInfoPanel(structureId) {
+                const info = this.getStructureInfo(structureId);
+                document.getElementById('structure-title').textContent = info.title;
+                document.getElementById('structure-description').innerHTML = info.description;
+            }
+            
+            getStructureInfo(structureId) {
+                const info = {
+                    title: '',
+                    description: ''
+                };
+                
+                switch(structureId) {
+                    case 'left-atrium':
+                        info.title = 'Left Atrium';
+                        info.description = `
+                            <p>The left atrium receives oxygenated blood from the lungs via the pulmonary veins.</p>
+                            <p><strong>Key Features:</strong></p>
+                            <ul>
+                                <li>Thin-walled chamber (2-3 mm thick)</li>
+                                <li>Receives blood from 4 pulmonary veins (2 from each lung)</li>
+                                <li>Normal pressure: 8-10 mmHg</li>
+                                <li>Holds about 45-50mL of blood in adults</li>
+                                <li>Contraction contributes 20-30% of ventricular filling (atrial kick)</li>
+                            </ul>
+                            <p><strong>Clinical Significance:</strong> Atrial fibrillation commonly originates here.</p>
+                        `;
+                        break;
+                        
+                    case 'left-ventricle':
+                        info.title = 'Left Ventricle';
+                        info.description = `
+                            <p>The left ventricle pumps oxygenated blood to the body through the aorta.</p>
+                            <p><strong>Key Features:</strong></p>
+                            <ul>
+                                <li>Thickest chamber wall (10-15 mm thick)</li>
+                                <li>Generates high pressure (120/80 mmHg in systemic circulation)</li>
+                                <li>Elliptical shape for efficient ejection</li>
+                                <li>Contains papillary muscles and chordae tendineae</li>
+                                <li>Ejection fraction normally 55-70%</li>
+                            </ul>
+                            <p><strong>Clinical Significance:</strong> Left ventricular hypertrophy occurs in hypertension.</p>
+                        `;
+                        break;
+                        
+                    case 'right-atrium':
+                        info.title = 'Right Atrium';
+                        info.description = `
+                            <p>The right atrium receives deoxygenated blood from the body via the superior and inferior vena cava.</p>
+                            <p><strong>Key Features:</strong></p>
+                            <ul>
+                                <li>Contains the sinoatrial (SA) node - the heart's pacemaker</li>
+                                <li>Normal pressure: 2-6 mmHg</li>
+                                <li>Has a small pouch called the right auricle</li>
+                                <li>Fossa ovalis marks the site of the fetal foramen ovale</li>
+                                <li>Contributes to ventricular filling (atrial kick)</li>
+                            </ul>
+                            <p><strong>Clinical Significance:</strong> Common site for atrial septal defects.</p>
+                        `;
+                        break;
+                        
+                    case 'right-ventricle':
+                        info.title = 'Right Ventricle';
+                        info.description = `
+                            <p>The right ventricle pumps deoxygenated blood to the lungs through the pulmonary artery.</p>
+                            <p><strong>Key Features:</strong></p>
+                            <ul>
+                                <li>Thinner wall than left ventricle (3-5 mm thick)</li>
+                                <li>Generates lower pressure (25/10 mmHg in pulmonary circulation)</li>
+                                <li>Crescent-shaped cavity due to interventricular septum</li>
+                                <li>Contains moderator band (septomarginal trabecula)</li>
+                                <li>More compliant than left ventricle</li>
+                            </ul>
+                            <p><strong>Clinical Significance:</strong> Prone to failure in pulmonary hypertension.</p>
+                        `;
+                        break;
+                        
+                    case 'aortic-valve':
+                        info.title = 'Aortic Valve';
+                        info.description = `
+                            <p>The aortic valve prevents backflow of blood from the aorta into the left ventricle.</p>
+                            <p><strong>Key Features:</strong></p>
+                            <ul>
+                                <li>Semilunar valve with three cusps (right, left, and posterior)</li>
+                                <li>Opens during ventricular systole (contraction)</li>
+                                <li>Normal valve area is 3-4 cm²</li>
+                                <li>Coronary arteries originate just above the valve in the aortic sinuses</li>
+                                <li>Closes when ventricular pressure falls below aortic pressure</li>
+                            </ul>
+                            <p><strong>Clinical Significance:</strong> Aortic stenosis is a common valvular disorder.</p>
+                        `;
+                        break;
+                        
+                    case 'mitral-valve':
+                        info.title = 'Mitral Valve';
+                        info.description = `
+                            <p>The mitral valve (bicuspid valve) controls blood flow between the left atrium and left ventricle.</p>
+                            <p><strong>Key Features:</strong></p>
+                            <ul>
+                                <li>Has two leaflets (anterior and posterior)</li>
+                                <li>Supported by chordae tendineae and papillary muscles</li>
+                                <li>Normal valve area is 4-6 cm²</li>
+                                <li>Closes during ventricular systole to prevent backflow</li>
+                                <li>Opens during ventricular diastole for filling</li>
+                            </ul>
+                            <p><strong>Clinical Significance:</strong> Mitral valve prolapse affects 2-3% of population.</p>
+                        `;
+                        break;
+                        
+                    case 'pulmonary-valve':
+                        info.title = 'Pulmonary Valve';
+                        info.description = `
+                            <p>The pulmonary valve controls blood flow from the right ventricle to the pulmonary artery.</p>
+                            <p><strong>Key Features:</strong></p>
+                            <ul>
+                                <li>Semilunar valve with three cusps (anterior, right, and left)</li>
+                                <li>Opens during ventricular systole</li>
+                                <li>Normal systolic pressure gradient is less than 10 mmHg</li>
+                                <li>Prevents backflow into the right ventricle during diastole</li>
+                                <li>Lower pressure system than aortic valve</li>
+                            </ul>
+                            <p><strong>Clinical Significance:</strong> Pulmonary stenosis is a common congenital defect.</p>
+                        `;
+                        break;
+                        
+                    case 'tricuspid-valve':
+                        info.title = 'Tricuspid Valve';
+                        info.description = `
+                            <p>The tricuspid valve controls blood flow between the right atrium and right ventricle.</p>
+                            <p><strong>Key Features:</strong></p>
+                            <ul>case 'tricuspid-valve':
+                            info.title = 'Tricuspid Valve';
+                            info.description = `
+                                <p>The tricuspid valve controls blood flow between the right atrium and right ventricle.</p>
+                                <p><strong>Key Features:</strong></p>
+                                <ul>
+                                    <li>Has three leaflets (anterior, posterior, and septal)</li>
+                                    <li>Largest of the heart's four valves</li>
+                                    <li>Normal valve area is 7-8 cm²</li>
+                                    <li>Supported by chordae tendineae and papillary muscles</li>
+                                    <li>Closes during ventricular systole to prevent backflow</li>
+                                </ul>
+                                <p><strong>Clinical Significance:</strong> Tricuspid regurgitation is common in right heart failure.</p>
+                            `;
+                            break;
+                            
+                        case 'aorta':
+                            info.title = 'Aorta';
+                            info.description = `
+                                <p>The aorta is the largest artery that carries oxygenated blood from the left ventricle to the body.</p>
+                                <p><strong>Key Features:</strong></p>
+                                <ul>
+                                    <li>Diameter of about 2.5-3.5 cm at root</li>
+                                    <li>Divided into ascending aorta, aortic arch, and descending aorta</li>
+                                    <li>Gives rise to coronary arteries just above the aortic valve</li>
+                                    <li>Contains baroreceptors that help regulate blood pressure</li>
+                                    <li>Highly elastic walls to accommodate pulsatile flow</li>
+                                </ul>
+                                <p><strong>Clinical Significance:</strong> Aortic aneurysms and dissections are life-threatening conditions.</p>
+                            `;
+                            break;
+                            
+                        case 'pulmonary-artery':
+                            info.title = 'Pulmonary Artery';
+                            info.description = `
+                                <p>The pulmonary artery carries deoxygenated blood from the right ventricle to the lungs.</p>
+                                <p><strong>Key Features:</strong></p>
+                                <ul>
+                                    <li>Only artery that carries deoxygenated blood</li>
+                                    <li>Divides into left and right pulmonary arteries</li>
+                                    <li>Normal pressure is about 25/10 mmHg</li>
+                                    <li>Wall thickness about half that of systemic arteries</li>
+                                    <li>Highly distensible to accommodate increased blood flow</li>
+                                </ul>
+                                <p><strong>Clinical Significance:</strong> Pulmonary hypertension increases afterload on right ventricle.</p>
+                            `;
+                            break;
+                            
+                        case 'pulmonary-veins':
+                            info.title = 'Pulmonary Veins';
+                            info.description = `
+                                <p>The pulmonary veins carry oxygenated blood from the lungs to the left atrium.</p>
+                                <p><strong>Key Features:</strong></p>
+                                <ul>
+                                    <li>Only veins that carry oxygenated blood</li>
+                                    <li>Typically four veins (two from each lung)</li>
+                                    <li>Have no valves unlike systemic veins</li>
+                                    <li>Enter the posterior wall of the left atrium</li>
+                                    <li>Contain myocardial sleeves that may initiate atrial fibrillation</li>
+                                </ul>
+                                <p><strong>Clinical Significance:</strong> Common focus for atrial fibrillation ablation procedures.</p>
+                            `;
+                            break;
+                            
+                        case 'vena-cava':
+                            info.title = 'Vena Cava';
+                            info.description = `
+                                <p>The superior and inferior vena cava return deoxygenated blood from the body to the right atrium.</p>
+                                <p><strong>Key Features:</strong></p>
+                                <ul>
+                                    <li>Superior vena cava drains upper body</li>
+                                    <li>Inferior vena cava drains lower body</li>
+                                    <li>No valves at the atrial junction</li>
+                                    <li>Blood flow is influenced by respiration and pressure changes</li>
+                                    <li>Wall contains smooth muscle that can constrict</li>
+                                </ul>
+                                <p><strong>Clinical Significance:</strong> Central venous access is often obtained via these vessels.</p>
+                            `;
+                            break;
+                            
+                        case 'coronary-arteries':
+                            info.title = 'Coronary Arteries';
+                            info.description = `
+                                <p>The coronary arteries supply oxygenated blood to the heart muscle itself.</p>
+                                <p><strong>Key Features:</strong></p>
+                                <ul>
+                                    <li>Left main coronary artery divides into LAD and circumflex</li>
+                                    <li>Right coronary artery supplies right heart and inferior wall</li>
+                                    <li>Blood flow occurs mainly during diastole</li>
+                                    <li>High oxygen extraction (70-80% at rest)</li>
+                                    <li>Extensive collateral circulation can develop</li>
+                                </ul>
+                                <p><strong>Clinical Significance:</strong> Coronary artery disease is the leading cause of death worldwide.</p>
+                            `;
+                            break;
+                            
+                        case 'sa-node':
+                            info.title = 'Sinoatrial (SA) Node';
+                            info.description = `
+                                <p>The SA node is the heart's natural pacemaker, initiating the electrical impulse.</p>
+                                <p><strong>Key Features:</strong></p>
+                                <ul>
+                                    <li>Located in the right atrial wall near the SVC junction</li>
+                                    <li>Normal intrinsic firing rate of 60-100 bpm</li>
+                                    <li>Rich in autonomic nerve supply</li>
+                                    <li>Depolarizes spontaneously (pacemaker cells)</li>
+                                    <li>Influenced by sympathetic and parasympathetic tone</li>
+                                </ul>
+                                <p><strong>Clinical Significance:</strong> SA node dysfunction can cause sick sinus syndrome.</p>
+                            `;
+                            break;
+                            
+                        case 'av-node':
+                            info.title = 'Atrioventricular (AV) Node';
+                            info.description = `
+                                <p>The AV node delays and conducts electrical impulses from atria to ventricles.</p>
+                                <p><strong>Key Features:</strong></p>
+                                <ul>
+                                    <li>Located in the interatrial septum near the coronary sinus</li>
+                                    <li>Delays conduction by about 0.1 second</li>
+                                    <li>Acts as backup pacemaker (40-60 bpm)</li>
+                                    <li>Only electrical connection between atria and ventricles</li>
+                                    <li>Vulnerable to ischemia and medications</li>
+                                </ul>
+                                <p><strong>Clinical Significance:</strong> AV node block is a common conduction disorder.</p>
+                            `;
+                            break;
+                            
+                        case 'bundle-of-his':
+                            info.title = 'Bundle of His';
+                            info.description = `
+                                <p>The bundle of His conducts electrical impulses from the AV node to the ventricles.</p>
+                                <p><strong>Key Features:</strong></p>
+                                <ul>
+                                    <li>Located in the interventricular septum</li>
+                                    <li>Divides into left and right bundle branches</li>
+                                    <li>Rapid conduction velocity (1-4 m/s)</li>
+                                    <li>Backup pacemaker (40-60 bpm if AV node fails)</li>
+                                    <li>Insulated from surrounding myocardium</li>
+                                </ul>
+                                <p><strong>Clinical Significance:</strong> Bundle branch blocks are common conduction abnormalities.</p>
+                            `;
+                            break;
+                            
+                        case 'purkinje-fibers':
+                            info.title = 'Purkinje Fibers';
+                            info.description = `
+                                <p>Purkinje fibers rapidly distribute electrical impulses throughout the ventricles.</p>
+                                <p><strong>Key Features:</strong></p>
+                                <ul>
+                                    <li>Specialized conducting fibers in ventricular walls</li>
+                                    <li>Fastest conduction in the heart (2-4 m/s)</li>
+                                    <li>Backup pacemaker (20-40 bpm if higher pacemakers fail)</li>
+                                    <li>Ensure synchronous ventricular contraction</li>
+                                    <li>Larger diameter than cardiac myocytes</li>
+                                </ul>
+                                <p><strong>Clinical Significance:</strong> Can be source of ventricular arrhythmias.</p>
+                            `;
+                            break;
+                            
+                        default:
+                            info.title = 'Human Heart Overview';
+                            info.description = `
+                                <p>The human heart is a muscular organ about the size of a fist, located in the thoracic cavity between the lungs. It functions as a pump to circulate blood throughout the body via the circulatory system.</p>
+                                <p><strong>Key Characteristics:</strong></p>
+                                <ul>
+                                    <li><strong>Weight:</strong> 250-350 grams in adults</li>
+                                    <li><strong>Dimensions:</strong> Approximately 12 cm long, 8 cm wide, and 6 cm thick</li>
+                                    <li><strong>Location:</strong> Mediastinum, between the second and fifth intercostal spaces</li>
+                                    <li><strong>Orientation:</strong> Apex points downward, forward, and to the left</li>
+                                    <li><strong>Function:</strong> Pumps ~5 liters of blood per minute at rest (70 mL per beat)</li>
+                                </ul>
+                                <p>Select a structure from the dropdown to learn detailed information about its anatomy and physiology.</p>
+                            `;
+                    }
+                    
+                    return info;
+                }
+                
+                startCardiacCycle() {
+                    if (this.isPlaying) return;
+                    
+                    this.isPlaying = true;
+                    const phases = [
+                        { name: "Atrial Systole", duration: 100, left: 0, width: 12.5 },
+                        { name: "Isovolumetric Contraction", duration: 50, left: 12.5, width: 6.25 },
+                        { name: "Ventricular Ejection", duration: 250, left: 18.75, width: 31.25 },
+                        { name: "Isovolumetric Relaxation", duration: 50, left: 50, width: 6.25 },
+                        { name: "Ventricular Filling", duration: 350, left: 56.25, width: 43.75 }
+                    ];
+                    
+                    let currentPhaseIndex = 0;
+                    const totalDuration = 800; // ms for full cycle
+                    
+                    this.cardiacCycleInterval = setInterval(() => {
+                        const phase = phases[currentPhaseIndex];
+                        const indicator = document.querySelector('.phase-indicator');
+                        const phaseText = document.querySelector('.phase-text');
+                        
+                        indicator.style.left = `${phase.left}%`;
+                        indicator.style.width = `${phase.width}%`;
+                        phaseText.textContent = phase.name;
+                        
+                        // Animate heart model based on phase
+                        this.animateHeartPhase(phase.name);
+                        
+                        currentPhaseIndex = (currentPhaseIndex + 1) % phases.length;
+                    }, (totalDuration / phases.length) / this.cycleSpeed);
+                }
+                
+                stopCardiacCycle() {
+                    if (this.cardiacCycleInterval) {
+                        clearInterval(this.cardiacCycleInterval);
+                        this.isPlaying = false;
+                    }
+                }
+                
+                animateHeartPhase(phaseName) {
+                    // Simplified animation for demonstration
+                    switch(phaseName) {
+                        case "Atrial Systole":
+                            // Slightly contract atria
+                            this.heartModel.traverse(child => {
+                                if (child.name.includes('atrium')) {
+                                    child.scale.set(0.95, 0.95, 0.95);
+                                }
+                            });
+                            break;
+                            
+                        case "Ventricular Ejection":
+                            // Contract ventricles and open semilunar valves
+                            this.heartModel.traverse(child => {
+                                if (child.name.includes('ventricle')) {
+                                    child.scale.set(0.9, 0.9, 0.9);
+                                }
+                                if (child.name.includes('aortic-valve') || child.name.includes('pulmonary-valve')) {
+                                    child.rotation.x = Math.PI / 4;
+                                }
+                            });
+                            break;
+                            
+                        case "Ventricular Filling":
+                            default:
+                                // Reset to normal state
+                                this.heartModel.traverse(child => {
+                                    if (child.isMesh) {
+                                        child.scale.set(1, 1, 1);
+                                        if (child.name.includes('valve')) {
+                                            child.rotation.x = 0;
+                                        }
+                                    }
+                                });
+                    }
+                }
+                
+                createPressureGraph() {
+                    const ctx = document.getElementById('pressure-graph').getContext('2d');
+                    
+                    // Sample data for cardiac cycle pressures
+                    const labels = Array.from({length: 100}, (_, i) => i * 8); // 0-800ms
+                    const leftVentricular = labels.map(x => {
+                        const phase = x % 800;
+                        if (phase < 100) return 8 + Math.random(); // Atrial systole
+                        if (phase < 150) return 8 + (120-8)*((phase-100)/50); // Isovolumetric contraction
+                        if (phase < 400) return 120 - (120-80)*((phase-150)/250); // Ejection
+                        if (phase < 450) return 80 - (80-8)*((phase-400)/50); // Isovolumetric relaxation
+                        return 8 + Math.random(); // Filling
+                    });
+                    
+                    const aortic = labels.map(x => {
+                        const phase = x % 800;
+                        if (phase < 150) return 80 + Math.random();
+                        if (phase < 400) return 80 + (120-80)*Math.sin(Math.PI*(phase-150)/250);
+                        return 80 + Math.random();
+                    });
+                    
+                    const leftAtrial = labels.map(x => {
+                        const phase = x % 800;
+                        if (phase < 100) return 8 + (12-8)*Math.sin(Math.PI*phase/100);
+                        if (phase < 450) return 8 + Math.random();
+                        return 8 + (12-8)*Math.sin(Math.PI*(phase-450)/350);
+                    });
+                    
+                    this.pressureChart = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: labels,
+                            datasets: [
+                                {
+                                    label: 'Left Ventricle',
+                                    data: leftVentricular,
+                                    borderColor: '#e53935',
+                                    backgroundColor: 'rgba(229, 57, 53, 0.1)',
+                                    borderWidth: 2,
+                                    tension: 0.4,
+                                    fill: false
+                                },
+                                {
+                                    label: 'Aorta',
+                                    data: aortic,
+                                    borderColor: '#c62828',
+                                    backgroundColor: 'rgba(198, 40, 40, 0.1)',
+                                    borderWidth: 2,
+                                    tension: 0.1,
+                                    fill: false
+                                },
+                                {
+                                    label: 'Left Atrium',
+                                    data: leftAtrial,
+                                    borderColor: '#1e88e5',
+                                    backgroundColor: 'rgba(30, 136, 229, 0.1)',
+                                    borderWidth: 2,
+                                    tension: 0.3,
+                                    fill: false
+                                }
+                            ]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                x: {
+                                    display: false
+                                },
+                                y: {
+                                    min: 0,
+                                    max: 140,
+                                    ticks: {
+                                        callback: function(value) {
+                                            return value + ' mmHg';
+                                        }
+                                    }
+                                }
+                            },
+                            plugins: {
+                                legend: {
+                                    position: 'top',
+                                },
+                                tooltip: {
+                                    callbacks: {
+                                        label: function(context) {
+                                            return context.dataset.label + ': ' + context.parsed.y.toFixed(1) + ' mmHg';
+                                        }
+                                    }
+                                }
+                            },
+                            animation: {
+                                duration: 0
+                            }
+                        }
+                    });
+                }
+                
+                updateCardiacOutput() {
+                    const hr = parseFloat(document.getElementById('hr-slider').value);
+                    const sv = parseFloat(document.getElementById('sv-slider').value);
+                    const co = (hr * sv) / 1000; // Convert to L/min
+                    document.getElementById('cardiac-output').textContent = co.toFixed(1);
+                    document.getElementById('co-slider').value = co.toFixed(1);
+                }
+                
+                startBloodFlowAnimation() {
+                    // This is already handled in the animate() method
+                }
+            }
+            
+            // Initialize the application when DOM is loaded
+            document.addEventListener('DOMContentLoaded', () => {
+                const heartSim = new HeartSimulation();
+                
+                // Make available in console for debugging
+                window.heartSim = heartSim;
+            });
+        </script>
+    </body>
+</html>

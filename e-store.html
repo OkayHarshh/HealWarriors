@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CyberPharma</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --neon-pink: #ff2a6d;
+            --neon-blue: #05d9e8;
+            --neon-purple: #d300c5;
+            --dark-bg: #0d0221;
+            --darker-bg: #05010f;
+            --text-primary: #d1f7ff;
+            --text-secondary: #a5b3c7;
+            --accent-yellow: #f9f002;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-primary);
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        /* Glow effects */
+        .glow {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: 0.3;
+            z-index: -1;
+        }
+
+        .glow-1 {
+            background: var(--neon-pink);
+            top: -100px;
+            left: -100px;
+        }
+
+        .glow-2 {
+            background: var(--neon-blue);
+            bottom: -100px;
+            right: -100px;
+        }
+
+        /* Navbar */
+        .navbar {
+            background-color: rgba(13, 2, 33, 0.8);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--neon-purple);
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid rgba(138, 158, 255, 0.2);
+        }
+        .nav2{
+            display: flex;
+            justify-content: center;
+            align-items: row;
+            gap: 20px;
+        }
+
+        .nav img {
+            height: 40px;
+            filter: drop-shadow(0 0 5px var(--neon-blue));
+        }
+
+
+
+        .nav ul {
+            display: flex;
+            list-style: none;
+            gap: 20px;
+            display: flex;
+            justify-content: endl;
+            a
+        }
+
+        .nav ul li {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .nav ul li i {
+            font-size: 20px;
+            color: var(--text-secondary);
+            transition: all 0.3s;
+        }
+
+        .nav ul li p {
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .nav ul li:hover i {
+            color: var(--neon-blue);
+            transform: translateY(-3px);
+        }
+
+        .nav ul li:hover p {
+            color: var(--text-primary);
+        }
+
+        /* Search Section */
+        .search-layout {
+            padding: 40px 20px;
+            background: linear-gradient(135deg, rgba(5, 217, 232, 0.1) 0%, rgba(211, 0, 197, 0.1) 100%);
+            border-bottom: 1px solid var(--neon-purple);
+        }
+
+        .search-layout > div {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .search-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .search-header h2 {
+            color: var(--neon-blue);
+            font-size: 28px;
+            text-shadow: 0 0 10px rgba(5, 217, 232, 0.5);
+        }
+
+        .search-header i {
+            color: var(--neon-pink);
+            font-size: 24px;
+        }
+
+        .search-header p {
+            color: var(--text-secondary);
+            font-size: 16px;
+        }
+
+        .search-header div {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255, 42, 109, 0.2);
+            padding: 5px 15px;
+            border-radius: 30px;
+            border: 1px solid var(--neon-pink);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .search-header div:hover {
+            background: rgba(255, 42, 109, 0.3);
+            box-shadow: 0 0 10px var(--neon-pink);
+        }
+
+        .search-header div h3 {
+            color: var(--neon-pink);
+            font-size: 14px;
+            font-family: 'Rajdhani', sans-serif;
+            font-weight: 600;
+        }
+
+        .search-header div i {
+            font-size: 14px;
+            color: var(--neon-pink);
+        }
+
+        .search-bar {
+            display: flex;
+            height: 50px;
+            border-radius: 30px;
+            overflow: hidden;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--neon-blue);
+            box-shadow: 0 0 15px rgba(5, 217, 232, 0.3);
+        }
+
+        .search-bar i {
+            padding: 0 20px;
+            display: flex;
+            align-items: center;
+            color: var(--neon-blue);
+            font-size: 18px;
+        }
+
+        .search-bar input[type="text"] {
+            flex: 1;
+            background: transparent;
+            border: none;
+            color: var(--text-primary);
+            font-size: 16px;
+            padding: 0 10px;
+            outline: none;
+        }
+
+        .search-bar input[type="text"]::placeholder {
+            color: var(--text-secondary);
+        }
+
+        .search-bar input[type="submit"] {
+            background: var(--neon-blue);
+            color: var(--dark-bg);
+            border: none;
+            padding: 0 25px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .search-bar input[type="submit"]:hover {
+            background: var(--neon-pink);
+        }
+
+        /* Category Cards */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .title {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: var(--neon-blue);
+            text-shadow: 0 0 10px rgba(5, 217, 232, 0.5);
+            position: relative;
+            display: inline-block;
+        }
+
+        .title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, var(--neon-blue), transparent);
+        }
+
+        .subtitle {
+            font-size: 18px;
+            color: var(--text-secondary);
+            margin-bottom: 30px;
+            font-weight: 400;
+        }
+
+        .nav-card-layout > div {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            gap: 20px;
+        }
+
+        .nav-card-layout > div > div {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .nav-card-layout > div > div::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            z-index: -1;
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-pink));
+            border-radius: 12px;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .nav-card-layout > div > div:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border-color: transparent;
+        }
+
+        .nav-card-layout > div > div:hover::before {
+            opacity: 0.5;
+        }
+
+        .nav-card-layout img {
+            width: 50px;
+            height: 50px;
+            object-fit: contain;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 5px rgba(5, 217, 232, 0.5));
+        }
+
+        .nav-card-layout h4 {
+            font-size: 14px;
+            margin-bottom: 5px;
+            color: var(--text-primary);
+        }
+
+        .nav-card-layout p {
+            font-size: 12px;
+            color: var(--accent-yellow);
+            font-weight: 600;
+        }
+
+        /* Offers Section */
+        .new-user-offer .cards-layout {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .new-user-offer .cards-layout > div {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s;
+            position: relative;
+        }
+
+        .new-user-offer .cards-layout > div:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border-color: var(--neon-purple);
+        }
+
+        .new-user-offer .cards-layout img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+        }
+
+        .new-user-offer .cards-layout p {
+            padding: 15px;
+            font-size: 16px;
+            color: var(--text-primary);
+        }
+
+        .new-user-offer .cards-layout > div:last-child {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 150px;
+            background: rgba(255, 42, 109, 0.1);
+            border: 1px dashed var(--neon-pink);
+        }
+
+        .new-user-offer .cards-layout > div:last-child i {
+            font-size: 30px;
+            color: var(--neon-pink);
+            margin-bottom: 10px;
+        }
+
+        .new-user-offer .cards-layout > div:last-child p {
+            color: var(--neon-pink);
+            text-align: center;
+        }
+
+        /* Shop by Categories */
+        .shop-categories > div {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 20px;
+        }
+
+        .shop-categories > div > div {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .shop-categories > div > div:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            border-color: var(--neon-blue);
+        }
+
+        .shop-categories img {
+            width: 60px;
+            height: 60px;
+            object-fit: contain;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 5px rgba(5, 217, 232, 0.5));
+        }
+
+        .shop-categories h4 {
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+
+        /* Prescription Section */
+        .order-with-prescription {
+            background: linear-gradient(135deg, rgba(5, 217, 232, 0.1) 0%, rgba(211, 0, 197, 0.1) 100%);
+            padding: 40px 20px;
+            border-top: 1px solid var(--neon-purple);
+            border-bottom: 1px solid var(--neon-blue);
+        }
+
+        .order-with-prescription > div {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        .order-with-prescription > div > div:first-child {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+        }
+
+        .order-with-prescription img {
+            width: 100px;
+            height: 100px;
+            object-fit: contain;
+            filter: drop-shadow(0 0 10px var(--neon-blue));
+        }
+
+        .order-with-prescription h3 {
+            color: var(--neon-blue);
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .order-with-prescription p {
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+            font-size: 16px;
+        }
+
+        .order-with-prescription button {
+            background: var(--neon-blue);
+            color: var(--dark-bg);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-family: 'Orbitron', sans-serif;
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s;
+        }
+
+        .order-with-prescription button:hover {
+            background: var(--neon-pink);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 42, 109, 0.4);
+        }
+
+        .order-with-prescription button i {
+            font-size: 16px;
+        }
+
+        .order-with-prescription > div > div:last-child h4 {
+            color: var(--neon-pink);
+            font-size: 20px;
+            margin-bottom: 20px;
+        }
+
+        .order-with-prescription > div > div:last-child > div {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+
+        .order-with-prescription > div > div:last-child > div > div {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .order-with-prescription > div > div:last-child > div > div h3 {
+            color: var(--neon-blue);
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .order-with-prescription > div > div:last-child > div > div p {
+            margin: 0;
+            font-size: 14px;
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--darker-bg);
+            padding: 40px 20px 20px;
+            border-top: 1px solid var(--neon-purple);
+        }
+
+        .footer-top {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .footer ul {
+            list-style: none;
+        }
+
+        .footer h3 {
+            color: var(--neon-blue);
+            font-size: 18px;
+            margin-bottom: 15px;
+            font-family: 'Orbitron', sans-serif;
+        }
+
+        .footer li {
+            color: var(--text-secondary);
+            margin-bottom: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .footer li:hover {
+            color: var(--neon-pink);
+            transform: translateX(5px);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+        }
+
+        .footer-bottom > div {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+
+        .footer-bottom h3 {
+            margin-bottom: 15px;
+        }
+
+        .footer-bottom img {
+            height: 30px;
+            margin-right: 15px;
+            margin-bottom: 15px;
+            filter: grayscale(100%) brightness(0.8);
+            transition: all 0.3s;
+        }
+
+        .footer-bottom img:hover {
+            filter: grayscale(0%) brightness(1);
+        }
+
+        .footer-bottom p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        /* Floating Button */
+        .floating-button {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: var(--neon-pink);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 0 20px rgba(255, 42, 109, 0.5);
+            z-index: 99;
+            transition: all 0.3s;
+        }
+
+        .floating-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 30px rgba(255, 42, 109, 0.8);
+        }
+
+        .floating-button i {
+            color: var(--dark-bg);
+            font-size: 24px;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .nav {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+
+            .pincode, .download_app {
+                order: 1;
+            }
+
+            .nav ul {
+                order: 2;
+                width: 100%;
+                justify-content: space-around;
+            }
+
+            .order-with-prescription > div {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+
+            .order-with-prescription > div > div:last-child > div {
+                grid-template-columns: 1fr;
+            }
+
+            .title {
+                font-size: 24px;
+            }
+
+            .subtitle {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="glow glow-1"></div>
+    <div class="glow glow-2"></div>
+    
+    <!-- Navbar -->
+<!-- Navbar -->
+<header class="navbar">
+    <div class="container" style="display: flex; justify-content: space-around; align-items: center; padding: 1rem 2rem;">
+      <!-- Logo Section -->
+      <div class="logo" style="display: flex; align-items: center; gap: 10px;">
+        <i class="fas fa-prescription-bottle-alt" style="font-size: 24px; color: var(--neon-blue);"></i>
+        <span style="font-family: 'Orbitron', sans-serif; font-size: 20px; font-weight: bold;margin-right: 450px;">CyberPharma</span>
+      </div>
+  
+      <!-- Navigation Menu -->
+      <nav class="nav-menu">
+        <ul style="display: flex; list-style: none; gap: 20px; margin: 0;">
+          <li><a href="Home.html" style="color: var(--text-primary); text-decoration: none;">Home</a></li>
+          <li><a href="pharm.html" style="color: var(--text-primary); text-decoration: none;">Pharmacy</a></li>
+          <li><a href="consult.html" style="color: var(--text-primary); text-decoration: none;">Doctors</a></li>
+          <li><a href="https://www.lalpathlabs.com/" style="color: var(--text-primary); text-decoration: none;">Lab Tests</a></li>
+          <li><a href="blog.html" style="color: var(--text-primary); text-decoration: none;">Health Blog</a></li>
+          <li><a href="vitamin.html" style="color: var(--text-primary); text-decoration: none;">Basic Guide</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  
+
+    <!-- Search Section -->
+    <div class="search-layout">
+        <div>
+            <div class="search-header">
+                <h2>WHAT ARE YOU LOOKING FOR?</h2>
+                <i class="fa-solid fa-clipboard-list"></i>
+                <p>Order with prescription.</p>
+                <div>
+                    <h3>UPLOAD NOW</h3>
+                    <i class="fa-solid fa-angle-right"></i>
+                </div>
+            </div>
+            <form class="search-bar">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <input type="text" placeholder="Search for medicine...">
+                <input type="submit" value="SEARCH">
+            </form>
+        </div>
+    </div>
+
+    <!-- Categories -->
+    <div class="nav-card-layout container">
+        <div>
+            <div>
+                <img src="https://via.placeholder.com/50x50/05d9e8/0d0221?text=💊" alt="Medicine">
+                <h4>Medicine</h4>
+                <p>UPTO 50% OFF</p>
+            </div>
+            <div>
+                <img src="https://via.placeholder.com/50x50/ff2a6d/0d0221?text=❤️" alt="Healthcare">
+                <h4>Healthcare</h4>
+                <p>UPTO 50% OFF</p>
+            </div>
+            <div>
+                <img src="https://via.placeholder.com/50x50/d300c5/0d0221?text=🔬" alt="Lab Tests">
+                <h4>Lab Tests</h4>
+                <p>UPTO 70% OFF</p>
+            </div>
+            <div>
+                <img src="https://via.placeholder.com/50x50/f9f002/0d0221?text=📝" alt="Health Blogs">
+                <h4>Health Blogs</h4>
+                <p></p>
+            </div>
+            <div>
+                <img src="https://via.placeholder.com/50x50/05d9e8/0d0221?text=➕" alt="PLUS">
+                <h4>PLUS</h4>
+                <p>SAVE 10% EXTRA</p>
+            </div>
+            <div>
+                <img src="https://via.placeholder.com/50x50/ff2a6d/0d0221?text=🎁" alt="Offers">
+                <h4>Offers</h4>
+                <p></p>
+            </div>
+            <div>
+                <img src="https://via.placeholder.com/50x50/d300c5/0d0221?text=🏥" alt="Surgeries">
+                <h4>Surgeries</h4>
+                <p></p>
+            </div>
+            <div>
+                <img src="https://via.placeholder.com/50x50/f9f002/0d0221?text=💰" alt="Value Store">
+                <h4>Value Store</h4>
+                <p>UPTO 60% OFF</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Offers -->
+    <div class="new-user-offer container">
+        <h1 class="title">OFFERS JUST FOR YOU</h1>
+
+        <div class="cards-layout">
+            <div>
+                <img src="https://via.placeholder.com/300x150/ff2a6d/0d0221?text=25% OFF" alt="25% Off">
+                <p>Flat 25% OFF</p>
+            </div>
+            <div>
+                <img src="https://via.placeholder.com/300x150/05d9e8/0d0221?text=20% OFF" alt="20% Off">
+                <p>Test - Flat 20% OFF + up to Rs.1000 surprise cashback</p>
+            </div>
+            <div>
+                <i class="fa-solid fa-lock"></i>
+                <p>Log in to view more offers</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Shop by Categories -->
+    <div class="shop-categories container">
+        <h1 class="title">SHOP BY CATEGORIES</h1>
+        <div>
+            <div>
+                <img src="https://via.placeholder.com/60x60/05d9e8/0d0221?text=🦠" alt="Covid essentials">
+                <h4>Covid essentials</h4>
+            </div>
+            <div>
+                <img src="https://via.placeholder.com/60x60/ff2a6d/0d0221?text=🧴" alt="Personal care">
+                <h4>Personal care</h4>
+            </div>
+            <div>
+                <img src="https://via.placeholder.com/60x60/d300c5/0d0221?text=🍏" alt="Health food">
+                <h4>Health food and drinks</h4>
+            </div>
+            <div>
+                <img src="https://via.placeholder.com/60x60/f9f002/0d0221?text=💄" alt="Beauty">
+                <h4>Beauty</h4>
+            </div>
+            <div>
+                <img src="https://via.placeholder.com/60x60/05d9e8/0d0221?text=🧴" alt="Skin care">
+                <h4>Skin care</h4>
+            </div>
+            <div>
+                <img src="https://via.placeholder.com/60x60/ff2a6d/0d0221?text=🏠" alt="Home care">
+                <h4>Home care</h4>
+            </div>
+            <div>
+                <img src="https://via.placeholder.com/60x60/d300c5/0d0221?text=🌿" alt="Ayurvedic care">
+                <h4>Ayurvedic care</h4>
+            </div>
+        </div>
+    </div>
+
+    <!-- Prescription Section -->
+    <div class="order-with-prescription">
+        <div>
+            <div>
+                <img src="https://via.placeholder.com/100x100/05d9e8/0d0221?text=📋" alt="Prescription">
+                <div>
+                    <h3>ORDER WITH PRESCRIPTION</h3>
+                    <p>Upload prescription and we will deliver your medicine</p>
+                    <button>
+                        <i class="fa-solid fa-paperclip"></i>
+                        Upload
+                    </button>
+                </div>
+            </div>
+
+            <div>
+                <h4>HOW DOES THIS WORK?</h4>
+
+                <div>
+                    <div>
+                        <h3>1</h3>
+                        <p>Upload a photo of your prescription</p>
+                    </div>
+                    <div>
+                        <h3>2</h3>
+                        <p>Add delivery address and place the order</p>
+                    </div>
+                    <div>
+                        <h3>3</h3>
+                        <p>We will call you to confirm the medicines</p>
+                    </div>
+                    <div>
+                        <h3>4</h3>
+                        <p>Now, sit back! your medicines will get delivered at your doorstep</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer container">
+        <div class="footer-top">
+            <div>
+                <ul>
+                    <h3>Company</h3>
+                    <li>About Us</li>
+                    <li>Careers</li>
+                    <li>Blog</li>
+                    <li>Partner with CyberPharma</li>
+                    <li>Sell at CyberPharma</li>
+                </ul>
+                <ul>
+                    <h3>Our Services</h3>
+                    <li>Order Medicine</li>
+                    <li>Healthcare Products</li>
+                    <li>Lab Tests</li>
+                </ul>
+            </div>
+            <div>
+                <ul>
+                    <h3>Featured Categories</h3>
+                    <li>Covid Essentials</li>
+                    <li>Personal Care</li>
+                    <li>Health Food and Drinks</li>
+                    <li>Beauty</li>
+                    <li>Skin Care</li>
+                    <li>Home Care</li>
+                    <li>Ayurvedic Care</li>
+                </ul>
+            </div>
+            <div>
+                <ul>
+                    <h3>Need Help</h3>
+                    <li>Browse All Medicines</li>
+                    <li>Browse All Molecules</li>
+                    <li>Browse All Cities & Areas</li>
+                    <li>Browse All Stores</li>
+                    <li>FAQs</li>
+                </ul>
+            </div>
+            <div>
+                <ul>
+                    <h3>Follow us on</h3>
+                    <li><i class="fab fa-instagram"></i> Instagram</li>
+                    <li><i class="fab fa-facebook"></i> Facebook</li>
+                    <li><i class="fab fa-youtube"></i> YouTube</li>
+                    <li><i class="fab fa-twitter"></i> Twitter</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <h3>Our Payment Partners</h3>
+            <div>
+                <div>
+                    <img src="https://via.placeholder.com/100x30/ffffff/0d0221?text=GPAY" alt="Google Pay">
+                    <img src="https://via.placeholder.com/100x30/ffffff/0d0221?text=PAYTM" alt="Paytm">
+                    <img src="https://via.placeholder.com/100x30/ffffff/0d0221?text=PHONEPE" alt="PhonePe">
+                    <img src="https://via.placeholder.com/100x30/ffffff/0d0221?text=VISA" alt="Visa">
+                    <img src="https://via.placeholder.com/100x30/ffffff/0d0221?text=MASTERCARD" alt="Mastercard">
+                </div>
+                <p>© 2023 CyberPharma. All Rights Reserved</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Floating Button -->
+    <div class="floating-button">
+        <i class="fa-solid fa-phone"></i>
+    </div>
+
+    <script>
+        // Simple interactivity
+        document.getElementById('pick_address').addEventListener('click', function() {
+            alert('Location selection would open here');
+        });
+
+        document.getElementById('open_login').addEventListener('click', function() {
+            alert('Login modal would open here');
+        });
+
+        document.querySelector('.download_app').addEventListener('click', function() {
+            alert('App download options would appear here');
+        });
+
+        document.querySelector('.floating-button').addEventListener('click', function() {
+            alert('Customer support would connect here');
+        });
+    </script>
+</body>
+
+</html>
